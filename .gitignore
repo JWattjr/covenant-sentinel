@@ -9,6 +9,7 @@
 *.sln
 *.sw?
 .env
+.env*.local
 node_modules
 # Python bytecode
 __pycache__/
@@ -18,6 +19,7 @@ __pycache__/
 /context
 /frontend/.next
 /frontend/next-env.d.ts
+/frontend/tsconfig.tsbuildinfo
 /frontend/bun.lock
 /frontend/package-lock.json
 *.compiled.js

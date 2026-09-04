@@ -6,25 +6,54 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-contracts:
-    name: Lint Contracts
+    name: GenVM lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: pip install -r requirements.txt
-      - run: genvm-lint check contracts/football_bets.py
+      # Both intelligent contracts must lint. The Sentinel is the policy and
+      # consensus layer; the Vault is the guarded child that holds the state.
+      - name: Lint CovenantSentinel
+        run: genvm-lint check contracts/covenant_sentinel.py
+      - name: Lint SentinelVault
+        run: genvm-lint check contracts/sentinel_vault.py
 
   test-direct:
-    name: Direct Mode Tests
+    name: Direct-mode tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: pip install -r requirements.txt
+      # Deterministic guardrails, adversarial evidence, policy management,
+      # proposal lifecycle, and vault authorization — with mocked web and LLM.
       - run: pytest tests/direct/ -v
+
+  frontend:
+    name: Frontend typecheck and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      # The frontend is an npm workspace, so install once from the repo root.
+      - run: npm ci
+      - name: Typecheck
+        run: npm run lint
+      - name: Production build
+        run: npm run build

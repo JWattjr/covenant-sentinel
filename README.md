@@ -1,143 +1,236 @@
-# Sample GenLayer project
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
-[![Discord](https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white)](https://discord.gg/8Jm4v89VAu)
-[![Telegram](https://img.shields.io/badge/Telegram--T.svg?style=social&logo=telegram)](https://t.me/genlayer)
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/yeagerai.svg?style=social&label=Follow%20%40GenLayer)](https://x.com/GenLayer)
-[![GitHub star chart](https://img.shields.io/github/stars/yeagerai/genlayer-project-boilerplate?style=social)](https://star-history.com/#yeagerai/genlayer-js)
+# Covenant Sentinel
 
-## About
-This project includes the boilerplate code for a GenLayer use case implementation, specifically a football bets game.
+**A constitutional firewall for on-chain treasuries, built as a pair of GenLayer Intelligent Contracts.**
 
-## What's included
-- An example intelligent contract (Football Bets) with web access and LLM integration
-- **Direct mode tests** — fast, in-memory unit tests with web/LLM mocking (~ms per test)
-- **Integration tests** — full end-to-end tests against GenLayer Studio
-- **Contract linting** — static analysis to catch common contract issues before deployment
-- **CI pipeline** — GitHub Actions workflow for linting and direct tests
-- A production-ready Next.js 15 frontend with TypeScript, TanStack Query, and Radix UI
-- Configuration file template and deployment scripts
+Most "AI governance" demos ask a model a question and print the answer. Covenant
+Sentinel makes the answer an *enforceable state transition*: a proposal is bound
+to an immutable policy version, evidence is fetched from an approved perimeter
+by the leader **and independently re-fetched by every validator**, the verdict is
+produced under consensus, and the guarded vault is only ever instructed by a
+finality-safe message. Nobody — not the governor, not the frontend, not a keeper —
+can move the treasury by any other path.
 
-## Requirements
-- Python >= 3.12
-- [GenLayer CLI](https://github.com/genlayerlabs/genlayer-cli) globally installed: `npm install -g genlayer`
-- GenLayer Studio (for integration tests and deployment): Install from [Docs](https://docs.genlayer.com/developers/intelligent-contracts/tooling-setup#using-the-genlayer-studio) or use the hosted [GenLayer Studio](https://studio.genlayer.com/)
+---
 
-## Project Structure
+## Why this needs GenLayer
+
+| Requirement | Why an ordinary chain cannot do it |
+| --- | --- |
+| Judge a spend request against a written policy | Needs an LLM, natively, inside the state transition |
+| Read the live web as evidence | Needs native, validated web access — not a trusted oracle feed |
+| Make disagreement safe | Needs an equivalence principle: leader proposes, validators independently re-derive |
+| Make an AI decision appealable | Needs the optimistic-democracy lifecycle and an appeal bond |
+| Never act on a provisional decision | Needs `on="finalized"` child messages |
+
+Everything that *can* be arithmetic stays arithmetic. GenLayer consensus is used
+only for the part that genuinely cannot be reduced to a number.
+
+---
+
+## The two contracts
+
+### `contracts/covenant_sentinel.py` — policy and consensus
+
+* Governor-only policy creation and publication. Policy versions are immutable
+  and every proposal is permanently bound to the version it was judged under.
+* Two proposal kinds:
+  * `submit_treasury_proposal(action_id, target, asset_id, amount, purpose, evidence_manifest_json)`
+  * `submit_emergency_pause_proposal(incident_id, guarded_target, incident_claim, evidence_manifest_json, requested_pause_hours)`
+* **Deterministic guardrails run before any nondeterministic work**: transfer cap
+  (R1), identifier and text limits, HTTPS-only evidence, at most five URLs, the
+  approved-domain allowlist including subdomains, and rejection of raw IPs and
+  local/private addresses. Emergency reports additionally require a non-governor
+  authorized reporter, two independent approved domains, and at most 72 hours.
+* Evaluation runs through `gl.vm.run_nondet_unsafe`. The leader fetches the
+  approved evidence and runs the evaluator; **each validator refetches the same
+  evidence and reruns the evaluator itself**, then compares verdict, risk level,
+  reason category, and safety-critical violated rules.
+* Model output is strict JSON, validated against closed enums, known rule IDs,
+  known evidence source IDs, bounded findings, and action-specific invariants.
+  Anything malformed is an LLM error that rotates — never an allow.
+* Four safe outcomes: `ALLOW`, `TIMELOCK`, `BLOCK`, `INSUFFICIENT_EVIDENCE`.
+  Unreachable evidence is a *deterministic* `INSUFFICIENT_EVIDENCE`.
+
+### `contracts/sentinel_vault.py` — the guarded child
+
+* Accepts transfers, pauses, and pause releases from exactly **one** Sentinel
+  address, configured once and irreversibly. The governor cannot bypass it.
+* Replay protection by action / incident ID, with a stored execution record.
+* An active pause blocks treasury actions.
+* Uses simulated `DEMO` accounting units. This is deliberately **not** custody of
+  a real asset — see [`docs/DECISIONS.md`](docs/DECISIONS.md).
+
+### The finality contract between them
 
 ```
-contracts/              # Python intelligent contracts
-tests/
-  direct/               # Fast in-memory tests (no Studio required)
-    test_create_bet.py   # Bet creation logic
-    test_resolve_bet.py  # Bet resolution with web/LLM mocks
-    test_views.py        # Read-only view methods
-  integration/           # Full tests against GenLayer Studio
-    test_football_bets.py
-    fixtures.py          # Expected state fixtures
-frontend/               # Next.js 15 app (TypeScript, TanStack Query, Radix UI)
-deploy/                 # TypeScript deployment scripts
-gltest.config.yaml      # Test runner network configuration
-pyproject.toml          # Python/pytest configuration
-.github/workflows/      # CI pipeline
+evaluate_proposal → ALLOW
+        │  emit(on="finalized")            ← nothing has moved yet
+        ▼
+SentinelVault.execute_authorized_transfer  ← runs only after parent finality
+        │  emit(on="finalized")
+        ▼
+CovenantSentinel.record_vault_execution    ← proposal becomes EXECUTED
 ```
 
-## Quick Start
+An **accepted** decision is provisional and appealable. It cannot move a demo
+unit or activate a pause. The dashboard shows accepted and finalized as
+different things, on purpose.
 
-### 1. Set up Python environment
+> **A note on the risk rule.** A `CRITICAL` risk assessment must reject a
+> treasury transfer — but a critical risk is exactly the condition that
+> *authorizes* a bounded protective pause. The validator therefore applies the
+> high/critical rejection to treasury transfers only. Regressing this would make
+> the emergency path unusable.
 
-```shell
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+---
+
+## Repository layout
+
+```
+contracts/            CovenantSentinel + SentinelVault intelligent contracts
+tests/direct/         16 fast in-memory tests with mocked web and LLM
+tests/integration/     5 full five-validator consensus tests against GLSim
+deploy/deployScript.ts Ordered, verified deployment and wiring
+frontend/             Next.js operator console (see frontend/README.md)
+config/               GenLayer config plus a Windows GLSim launcher
+docs/                 Architecture, decisions, threat model, demo, pitch, ops
 ```
 
-### 2. Lint your contracts
+---
 
-Run the GenVM linter to catch issues before deployment:
+## Quick start
 
-```shell
-genvm-lint check contracts/football_bets.py
-```
-
-The linter catches:
-- Forbidden imports and non-deterministic calls
-- Invalid storage types (must use `TreeMap`, `DynArray`, `u256`, etc.)
-- Missing decorators and return type annotations
-- Non-deterministic operations outside equivalence principle blocks
-- And [20+ other rules](https://github.com/genlayerlabs/genvm-linter)
-
-### 3. Run direct mode tests
-
-Direct mode tests run contracts in-memory without needing GenLayer Studio. They use mocks for web requests and LLM calls, giving you fast feedback (~milliseconds per test):
-
-```shell
-pytest tests/direct/ -v
-```
-
-Direct mode features used in these tests:
-- `direct_deploy("contracts/file.py")` — deploy contract in memory
-- `direct_vm.sender = address` — set transaction sender
-- `direct_vm.mock_web(pattern, response)` — mock HTTP/render calls
-- `direct_vm.mock_llm(pattern, response)` — mock LLM responses
-- `direct_vm.expect_revert("message")` — assert expected failures
-- `direct_vm.clear_mocks()` — reset mocks between calls
-
-### 4. Deploy the contract
-
-1. Choose your network: `genlayer network`
-2. Deploy: `genlayer deploy` (runs the script in `/deploy/deployScript.ts`)
-
-### 5. Run integration tests
-
-Integration tests deploy the contract to GenLayer Studio and test with real consensus:
-
-```shell
-gltest tests/integration/ -v -s
-```
-
-These require GenLayer Studio running (local or hosted).
-
-### 6. Set up the frontend
-
-1. Copy `frontend/.env.example` to `frontend/.env`
-2. Add your deployed contract address as `NEXT_PUBLIC_CONTRACT_ADDRESS`
-3. Run:
-
-```shell
-cd frontend
+```bash
+python -m venv .venv && .venv/Scripts/pip install -r requirements.txt
 npm install
+```
+
+### Lint both contracts
+
+```bash
+.venv/Scripts/genvm-lint check contracts/covenant_sentinel.py
+```
+
+```bash
+.venv/Scripts/genvm-lint check contracts/sentinel_vault.py
+```
+
+On a Windows console the linter can die with `UnicodeEncodeError` while printing
+its own `✓`. That is a cp1252 stdout problem, not a lint failure — prefix the
+command with `PYTHONIOENCODING=utf-8`.
+
+### Direct-mode tests (fast, no simulator)
+
+```bash
+.venv/Scripts/pytest tests/direct/ -v
+```
+
+### Full consensus integration tests
+
+Start a five-validator local GLSim first. On Windows use the bundled launcher —
+the upstream Windows runner has a temporary-file/stdin defect:
+
+```bash
+.venv/Scripts/python config/glsim_windows.py --port 4000 --validators 5 --no-browser --seed covenant-sentinel
+```
+
+Then, in a second shell:
+
+```bash
+.venv/Scripts/gltest tests/integration/ -v -s --network localnet
+```
+
+### Frontend
+
+```bash
 npm run dev
 ```
 
-The app will be available at http://localhost:3000/.
+---
 
-## How the Football Bets Contract Works
+## Deployed instance (StudioNet)
 
-1. **Creating Bets**: Users bet on a football match by providing the game date, teams, and predicted winner.
-2. **Resolving Bets**: After the match, the contract fetches results from BBC Sport, uses an LLM to extract the score, and validates via the equivalence principle.
-3. **Points**: Correct predictions earn points. Users can query their points or the leaderboard.
+A live pair is deployed and wired on GenLayer StudioNet. `deploy/last-deployment.json`
+holds the full record.
 
-## Testing Strategy
+| Contract | Address |
+| --- | --- |
+| `CovenantSentinel` | `0xdE348d4F02f8e8F4362A4146790541b18659809A` |
+| `SentinelVault` | `0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870` |
 
-| Test Type | Command | Speed | Requires Studio |
-|-----------|---------|-------|-----------------|
-| **Lint** | `genvm-lint check contracts/*.py` | ~250ms | No |
-| **Direct** | `pytest tests/direct/ -v` | ~ms/test | No |
-| **Integration** | `gltest tests/integration/ -v -s` | ~min/test | Yes |
+Policy `covenant-v1` v1, cap 10,000, 25,000 DEMO funded, approved domains
+`security.example.org` and `incident.example.net`, one registered non-governor
+emergency reporter. To point the console at it, put this in `frontend/.env.local`:
 
-**Recommended workflow:**
-1. Lint after every contract change
-2. Run direct tests frequently during development
-3. Run integration tests before deployment to verify consensus behavior
+```
+NEXT_PUBLIC_GENLAYER_RPC_URL=https://studio.genlayer.com/api
+NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS=0xdE348d4F02f8e8F4362A4146790541b18659809A
+NEXT_PUBLIC_COVENANT_VAULT_ADDRESS=0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870
+```
 
-For AI coding agents (Claude Code, Cursor, etc.), the linter and direct tests provide the fast feedback loop needed for iterative development without requiring a running Studio instance.
+---
 
-## Community
-- **[Discord](https://discord.gg/8Jm4v89VAu)**: Discussions, support, and announcements
-- **[Telegram](https://t.me/genlayer)**: Informal chats and quick updates
+## Deployment
+
+`deploy/deployScript.ts` performs the whole wiring in a fixed order and verifies
+**both** the consensus status and the GenVM execution result at every step,
+because the two bindings are one-time and irreversible.
+
+```bash
+genlayer network set studionet
+```
+
+```bash
+genlayer deploy
+```
+
+Order: Vault → Sentinel → `configure_sentinel` → `configure_guarded_vault` →
+`create_initial_policy` → approved evidence domains → optional reporter. The
+script writes `deploy/last-deployment.json` and prints the two environment
+variables the frontend needs.
+
+Optional environment overrides:
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `COVENANT_INITIAL_DEMO_BALANCE` | `25000` | Simulated starting balance |
+| `COVENANT_MAX_TRANSFER` | `10000` | R1 hard cap in the published policy |
+| `COVENANT_POLICY_ID` | `covenant-v1` | Canonical policy identifier |
+| `COVENANT_POLICY_FILE` | *(built-in R1–R5)* | Path to a policy text file |
+| `COVENANT_EVIDENCE_DOMAINS` | demo pair | Comma-separated allowlist |
+| `COVENANT_REPORTER_ADDRESS` | *(unset)* | Non-governor emergency reporter |
+
+Contract deployment and interaction go exclusively through the official GenLayer
+CLI and JS SDK. There is no raw EVM JSON-RPC path anywhere in this repository.
+
+---
 
 ## Documentation
-For detailed information, see our [documentation](https://docs.genlayer.com/).
+
+| Document | Contents |
+| --- | --- |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Component diagram, state machine, evidence boundary |
+| [`docs/DECISIONS.md`](docs/DECISIONS.md) | Why the runner is pinned, why finality gates effects, why the treasury is simulated |
+| [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md) | Adversaries, attack surfaces, mitigations, and accepted residual risk |
+| [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) | A timed walkthrough of the four outcomes |
+| [`docs/HACKATHON_PITCH.md`](docs/HACKATHON_PITCH.md) | The judge-facing argument |
+| [`docs/OPERATIONS.md`](docs/OPERATIONS.md) | Runbook: deploy, verify, respond, release a pause |
+
+---
+
+## Honest scope
+
+* The treasury is **simulated integer accounting**, not custody of a real or
+  bridged asset.
+* There is no EVM adapter or cross-chain relayer. Adding one requires a separate,
+  independently audited trust model.
+* Pauses do **not** self-expire. Intelligent contracts do not wake themselves, so
+  the vault records the approved bound and the governor issues a manual,
+  finality-safe release. This is stated in the product and the docs rather than
+  faked.
+* The domain allowlist is a source-*hygiene* control. It does not prove a source
+  is correct or uncompromised.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+MIT — see [`LICENSE`](LICENSE).

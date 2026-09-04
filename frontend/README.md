@@ -1,84 +1,107 @@
-# GenLayer Football Market
+# Covenant Sentinel — operator console
 
-Next.js frontend for GenLayer Football Market - AI-powered football match predictions on GenLayer blockchain.
+A Next.js dashboard for the Covenant Sentinel intelligent contracts. It is a
+deliberately **untrusted convenience layer**: it prepares inputs, displays
+contract state, follows the GenLayer transaction lifecycle, and can post an
+appeal bond. It never computes, caches, or persists an authoritative verdict.
 
-## Setup
+## Design rules this console follows
 
-1. Install dependencies:
+1. **No invented state.** Every number on screen comes from a `readContract`
+   call against the deployed pair. With no addresses configured, the page shows
+   an explicit *"Deployment not configured"* panel naming the missing variables —
+   not a demo dataset. If a read fails, the error is shown verbatim.
+2. **Decided ≠ done.** A GenLayer receipt is treated as successful only when the
+   consensus status is decided **and** the GenVM execution result is
+   `FINISHED_WITH_RETURN`. The lifecycle rail distinguishes `SUBMITTED`,
+   `DECIDED`, `FINALIZED`, `FAILED`, and `APPEALED`, and says in plain language
+   that a decided transfer has not moved anything yet.
+3. **Child messages are visible.** Each receipt lists the transactions the
+   contract triggered (`getTriggeredTransactionIds`), so the finality-safe
+   Sentinel → Vault → Sentinel path is observable rather than asserted.
+4. **The form is never the authority.** Client-side checks mirror the contract's
+   guardrails purely to save a wasted transaction. The contract repeats all of
+   them.
 
-**Using bun:**
-```bash
-bun install
-```
+## Configuration
 
-**Using npm:**
-```bash
-npm install
-```
+Copy `.env.example` to `.env.local` and fill in the addresses printed by
+`npm run deploy` from the repository root.
 
-2. Create `.env` file:
-```bash
-cp .env.example .env
-```
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS` | yes | Deployed `CovenantSentinel` |
+| `NEXT_PUBLIC_COVENANT_VAULT_ADDRESS` | yes | Deployed `SentinelVault` |
+| `NEXT_PUBLIC_GENLAYER_RPC_URL` | yes | GenLayer JSON-RPC endpoint |
+| `NEXT_PUBLIC_GENLAYER_CHAIN_ID` | no | Used by the MetaMask add/switch-chain helper |
+| `NEXT_PUBLIC_GENLAYER_CHAIN_NAME` | no | Display name for that helper |
+| `NEXT_PUBLIC_GENLAYER_SYMBOL` | no | Native symbol for that helper |
 
-3. Configure environment variables:
-   - `NEXT_PUBLIC_CONTRACT_ADDRESS` - GenLayer Football Betting contract address
-   - `NEXT_PUBLIC_STUDIO_URL` - GenLayer Studio URL (default: https://studio.genlayer.com/api)
+The chain is derived from the RPC URL: a `localhost`/`127.0.0.1` endpoint uses
+`localnet`, an endpoint containing `asimov` uses `testnetAsimov`, anything else
+uses `studionet`.
 
-## Development
+`NEXT_PUBLIC_*` values are inlined at build time, so restart the dev server after
+editing them.
 
-**Using bun:**
-```bash
-bun dev
-```
+## Commands
 
-**Using npm:**
+Run from the repository root (the frontend is an npm workspace):
+
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Build
-
-**Using bun:**
 ```bash
-bun run build
-bun start
+npm run lint
 ```
 
-**Using npm:**
 ```bash
 npm run build
-npm start
 ```
 
-## Tech Stack
+`lint` is `tsc --noEmit`; `build` is the Next.js production build, which
+typechecks again.
 
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type safety
-- **Tailwind CSS v4** - Styling with custom glass-morphism theme
-- **genlayer-js** - GenLayer blockchain SDK
-- **TanStack Query (React Query)** - Data fetching and caching
-- **Radix UI** - Accessible component primitives
-- **shadcn/ui** - Pre-built UI components
+## What the panels do
 
-## Wallet Management
+| Panel | Contract source |
+| --- | --- |
+| Active policy, hard transfer cap | `get_current_policy_version`, `get_policy` |
+| Guarded balance, vault protection | `SentinelVault.get_state` |
+| Proposal queue | `get_proposal_ids` → `get_proposal` |
+| Decision trace | the selected proposal's verdict, risk, rule IDs, findings, evidence links, execution status |
+| Controlled submission | `submit_treasury_proposal`, `submit_emergency_pause_proposal` |
+| Evaluate through consensus | `evaluate_proposal` |
+| Queue safe release | `release_emergency_pause` (governor only, executed pauses only) |
+| Lifecycle observer | `waitForTransactionReceipt`, `getTransaction`, `getTriggeredTransactionIds`, `canAppeal` |
+| Evidence perimeter | `get_approved_evidence_domains` |
 
-The app uses GenLayer's account system:
-- **Create Account**: Generate a new private key
-- **Import Account**: Import existing private key
-- **Export Account**: Export your private key (secured)
-- **Disconnect**: Clear stored account data
+## Appeals
 
-Accounts are stored in browser's localStorage for development convenience.
+The documented flow is:
 
-## Features
+```ts
+const charge = await client.getAppealCharge({ txId });
+await client.appealTransaction({ txId, value: charge });
+```
 
-- **Create Bets**: Create football match predictions with team names, game date, and predicted winner (Team 1, Team 2, or Draw)
-- **View Bets**: Real-time bet table with match details, predictions, status, and owners
-- **Resolve Bets**: Bet owners can resolve matches using GenLayer's AI to verify actual results
-- **Leaderboard**: Track top players by points earned from correct predictions
-- **Player Stats**: View your points and ranking in the community
-- **Glass-morphism UI**: Premium dark theme with OKLCH colors, backdrop blur effects, and smooth animations
-- **Real-time Updates**: Automatic data fetching with 3-second polling intervals via TanStack Query
+`genlayer-js@1.1.x` — the version pinned here — names the bond query
+`getMinAppealBond`. `lib/covenant/client.ts` prefers `getAppealCharge` when the
+installed SDK exposes it and falls back to `getMinAppealBond` otherwise, so the
+console works on both without ever guessing a bond value. The appeal button only
+appears when `canAppeal({ txId })` returns true.
+
+## Stack
+
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS 4 ·
+TanStack Query · `genlayer-js` · MetaMask via `window.ethereum`.
+
+## Layout
+
+```
+app/            layout, providers, and the single console page
+components/     console panels (queue, detail, composer, rail, overview)
+lib/covenant/   typed SDK client, dashboard hook, shared types
+lib/genlayer/   wallet provider and MetaMask/network helpers
+```

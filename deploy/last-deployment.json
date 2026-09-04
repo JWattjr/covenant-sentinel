@@ -1,0 +1,17 @@
+{
+  "network": "Genlayer Studio Network",
+  "deployedAt": "2026-09-04T13:31:29.248Z",
+  "sentinelAddress": "0xdE348d4F02f8e8F4362A4146790541b18659809A",
+  "vaultAddress": "0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870",
+  "policy": {
+    "canonicalId": "covenant-v1",
+    "maxTransfer": 10000,
+    "version": 1
+  },
+  "initialDemoBalance": 25000,
+  "approvedEvidenceDomains": [
+    "security.example.org",
+    "incident.example.net"
+  ],
+  "emergencyReporter": "0x2c8eb5db1105a85be66badafed88d10cf393cdd8"
+}

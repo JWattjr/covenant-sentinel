@@ -1,16 +1,19 @@
 {
-  "name": "genlayer-project",
+  "name": "covenant-sentinel",
   "type": "module",
   "private": true,
-  "workspaces": ["frontend"],
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
-    "dev": "cd frontend && npm run dev",
-    "build": "cd frontend && npm run build",
-    "start": "cd frontend && npm run start",
-    "lint": "cd frontend && npm run lint",
+    "dev": "npm run dev --workspace frontend",
+    "build": "npm run build --workspace frontend",
+    "start": "npm run start --workspace frontend",
+    "lint": "npm run lint --workspace frontend",
     "deploy": "genlayer deploy"
   },
   "devDependencies": {
     "genlayer-js": "^1.1.8"
-  }
+  },
+  "description": "Covenant Sentinel: a GenLayer-native policy enforcement and guarded treasury system."
 }

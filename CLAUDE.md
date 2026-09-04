@@ -5,20 +5,43 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Quick Commands
 
 ```bash
-# Linting
-genvm-lint check contracts/football_bets.py    # Lint a contract
+# Linting (both contracts must pass). On Windows, PYTHONIOENCODING=utf-8 avoids
+# a cp1252 UnicodeEncodeError while the linter prints its own success glyph.
+genvm-lint check contracts/covenant_sentinel.py
+genvm-lint check contracts/sentinel_vault.py
 
 # Testing
-pytest tests/direct/ -v                        # Direct mode tests (fast, no Studio)
-gltest tests/integration/ -v -s                # Integration tests (requires Studio)
+pytest tests/direct/ -v                        # Direct mode tests (fast, no simulator)
+gltest tests/integration/ -v -s --network localnet   # Five-validator consensus tests
 
-# Deployment
-genlayer network                               # Select network
-genlayer deploy                                # Deploy contracts
+# Local simulator (Windows: the bundled launcher works around an upstream
+# temporary-file/stdin defect in the official Windows runner)
+python config/glsim_windows.py --port 4000 --validators 5 --no-browser --seed covenant-sentinel
 
-# Frontend
-cd frontend && npm run dev                     # Start frontend dev server
+# Deployment (Vault first, then Sentinel, then one-time wiring)
+genlayer network set studionet
+genlayer deploy
+
+# Frontend (npm workspace, run from the repo root)
+npm run dev
 ```
+
+## This project
+
+Covenant Sentinel: a policy-bound treasury guard. `contracts/covenant_sentinel.py`
+holds immutable policy versions and runs consensus evaluation;
+`contracts/sentinel_vault.py` is a guarded child that only its one configured
+Sentinel may instruct. See `README.md` and `docs/`.
+
+**Do not change the pinned runner header** in either contract
+(`py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6`) without
+proving a replacement works with the direct-test runtime. The linter advertises a
+newer runner that is not compatible with it.
+
+**Do not regress the risk-level asymmetry**: `HIGH`/`CRITICAL` rejection applies
+to treasury transfers only. `CRITICAL` is the condition that authorizes a bounded
+emergency pause, so applying the transfer invariant to both action types breaks
+the emergency path.
 
 ## Architecture
 
@@ -27,20 +50,22 @@ contracts/          # Python intelligent contracts
 tests/
   direct/           # Fast in-memory tests with web/LLM mocks
   integration/      # Full tests against GenLayer Studio
-frontend/           # Next.js 15 app (TypeScript, TanStack Query, Radix UI)
+frontend/           # Next.js operator console (TypeScript, TanStack Query)
 deploy/             # TypeScript deployment scripts
+docs/               # Architecture, decisions, threat model, demo, pitch, ops
+config/             # GenLayer config plus the Windows GLSim launcher
 ```
 
-**Frontend stack**: Next.js 15, React 19, TypeScript, Tailwind CSS, TanStack Query, Wagmi/Viem, MetaMask wallet integration.
+**Frontend stack**: Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS 4, TanStack Query, genlayer-js, MetaMask via `window.ethereum`.
 
 ## Development Workflow
 
 1. Write/modify contract in `contracts/`
-2. Lint: `genvm-lint check contracts/your_contract.py`
+2. Lint: `genvm-lint check contracts/covenant_sentinel.py`
 3. Test direct: `pytest tests/direct/ -v`
-4. Start Studio and deploy: `genlayer deploy`
-5. Test integration: `gltest tests/integration/ -v -s`
-6. Run frontend: `cd frontend && npm run dev`
+4. Start GLSim, then test integration: `gltest tests/integration/ -v -s --network localnet`
+5. Deploy: `genlayer deploy`
+6. Run frontend: `npm run dev`
 
 ## Contract Development
 
@@ -113,10 +138,14 @@ The GenVM linter catches contract issues before deployment:
 
 ## Frontend Patterns
 
-- Contract interactions: `frontend/lib/contracts/FootballBets.ts`
-- React hooks: `frontend/lib/hooks/useFootballBets.ts`
+- Contract interactions: `frontend/lib/covenant/client.ts`
+- Shared types: `frontend/lib/covenant/types.ts`
+- React hook: `frontend/lib/covenant/useCovenant.ts`
 - Wallet context: `frontend/lib/genlayer/WalletProvider.tsx`
-- GenLayer client: `frontend/lib/genlayer/client.ts`
+- MetaMask/network helpers: `frontend/lib/genlayer/client.ts`
+
+Treat a transaction as successful only when the consensus status is decided AND
+`txExecutionResultName` is `FINISHED_WITH_RETURN`. A status alone is not enough.
 
 ## AI Agent Skills
 
