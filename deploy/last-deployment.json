@@ -12,7 +12,7 @@
   "initialDemoBalance": 25000,
   "postSeedDemoBalance": 24900,
   "frontendUrl": "https://covenant-sentinel.vercel.app",
-  "frontendDeploymentId": "dpl_H4sZBEeCyaLSmfodV6iBAfFSGsAM",
+  "frontendDeploymentId": "dpl_GdLAbqk35cyo1Ceyh4GXZUSTN2PE",
   "evidenceFixtureIndex": "https://covenant-sentinel.vercel.app/evidence/index.json",
   "approvedEvidenceDomains": [
     "covenant-sentinel.vercel.app"
@@ -22,10 +22,21 @@
     "providerSelection": "EIP-6963 MetaMask provider (io.metamask)",
     "proposalId": "wallet-ui-unavailable-001",
     "proposalSequence": 5,
-    "observedStatus": "PENDING",
+    "observedStatus": "INSUFFICIENT_EVIDENCE",
     "observedExecutionStatus": "NOT_QUEUED",
+    "riskLevel": "HIGH",
+    "reasonCode": "EVIDENCE_UNAVAILABLE",
+    "evaluationTransaction": "0xdc043ee18c6aa358f67074a6eb01bf5df7e710a47898cf67dcde22c149d60ce6",
+    "evaluationConsensusStatus": "FINALIZED",
+    "evaluationChildTransactions": [],
     "requestedAmount": 1,
-    "assetId": "DEMO"
+    "assetId": "DEMO",
+    "postEvaluationDemoBalance": 24900
+  },
+  "appealVerification": {
+    "supportedByInstalledStudioNetClient": false,
+    "clientVersion": "genlayer-js 1.1.8",
+    "reason": "StudioNet chain profile omits appeal, fee-manager, and rounds-storage contract metadata; safe appeal charge cannot be quoted."
   },
   "evidenceDomainConfigurationTransactions": {
     "approveLiveHost": "0xc2abd0ab8d6e3f464fb0df5a0f04ac26abef583a63b059fc4deb32a38287041c",

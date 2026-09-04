@@ -234,6 +234,7 @@ function detailFor(
   phase: TransactionPhase,
   executionSucceeded: boolean | null,
   errorText: string,
+  appealable = false,
 ): string {
   if (errorText) return errorText;
   switch (phase) {
@@ -244,7 +245,9 @@ function detailFor(
     case "FINALIZED":
       return "Finalized. Any finality-safe child message to the vault has now been released.";
     case "DECIDED":
-      return "Decided but still appealable. The guarded vault has not been instructed yet.";
+      return appealable
+        ? "Decided and appealable. The guarded vault has not been instructed yet."
+        : "Decided. No appeal is currently available through this network client, and the guarded vault has not been instructed yet.";
     case "APPEALED":
       return "An appeal bond was posted. The decision is being re-run by a widened validator set.";
     default:
@@ -270,7 +273,12 @@ export function snapshotFromReceipt(
     finalized: evaluated.finalized,
     appealable,
     triggeredIds,
-    detail: detailFor(evaluated.phase, evaluated.executionSucceeded, evaluated.executionDetail),
+    detail: detailFor(
+      evaluated.phase,
+      evaluated.executionSucceeded,
+      evaluated.executionDetail,
+      appealable,
+    ),
   };
 }
 

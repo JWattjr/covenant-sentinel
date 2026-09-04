@@ -198,6 +198,13 @@ genlayer appeal <TX_HASH>
 An appeal widens the validator set and re-runs the decision. It is only possible
 before finality — which is precisely why no vault effect happens before then.
 
+The stable `genlayer-js` 1.1.8 StudioNet profile has no appeal,
+fee-manager, or rounds-storage contract metadata, so `appeal-bond` cannot quote
+the required charge there. Do not guess a zero bond or call the low-level
+`submitAppeal` surface. The console hides Appeal when the client cannot confirm
+eligibility; use a network/client profile that exposes the supported safe appeal
+charge path for an end-to-end appeal test.
+
 ### An evaluation keeps failing to reach consensus
 
 Repeated rotation usually means the validators genuinely disagree. Check:

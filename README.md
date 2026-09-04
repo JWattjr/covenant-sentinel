@@ -72,9 +72,10 @@ SentinelVault.execute_authorized_transfer  ← runs only after parent finality
 CovenantSentinel.record_vault_execution    ← proposal becomes EXECUTED
 ```
 
-An **accepted** decision is provisional and appealable. It cannot move a demo
-unit or activate a pause. The dashboard shows accepted and finalized as
-different things, on purpose.
+An **accepted** decision is provisional. On networks whose client profile
+exposes the appeal contracts it is also appealable; either way, it cannot move a
+demo unit or activate a pause before finality. The dashboard shows accepted and
+finalized as different things, on purpose.
 
 > **A note on the risk rule.** A `CRITICAL` risk assessment must reject a
 > treasury transfer — but a critical risk is exactly the condition that
@@ -150,23 +151,34 @@ npm run dev
 
 ## Deployed instance (StudioNet)
 
-A live pair is deployed and wired on GenLayer StudioNet. `deploy/last-deployment.json`
-holds the full record.
+A live pair is deployed and wired on GenLayer StudioNet, with the operator
+console at <https://covenant-sentinel.vercel.app>.
+`deploy/last-deployment.json` holds the full record.
 
 | Contract | Address |
 | --- | --- |
 | `CovenantSentinel` | `0xdE348d4F02f8e8F4362A4146790541b18659809A` |
 | `SentinelVault` | `0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870` |
 
-Policy `covenant-v1` v1, cap 10,000, 25,000 DEMO funded, approved domains
-`security.example.org` and `incident.example.net`, one registered non-governor
-emergency reporter. To point the console at it, put this in `frontend/.env.local`:
+Policy `covenant-v1` v1 has a 10,000 DEMO cap. The guarded balance is 24,900
+DEMO after the verified ALLOW fixture executed, and the active evidence domain
+is `covenant-sentinel.vercel.app`. The queue contains finality-verified ALLOW,
+BLOCK, TIMELOCK, and INSUFFICIENT_EVIDENCE examples plus a real browser-wallet
+fail-closed evaluation. To point a local console at it, put this in
+`frontend/.env.local`:
 
 ```
 NEXT_PUBLIC_GENLAYER_RPC_URL=https://studio.genlayer.com/api
 NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS=0xdE348d4F02f8e8F4362A4146790541b18659809A
 NEXT_PUBLIC_COVENANT_VAULT_ADDRESS=0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870
 ```
+
+The current stable `genlayer-js` StudioNet profile does not expose the appeal,
+fee-manager, or rounds-storage contracts needed to quote and submit a safe
+appeal. The hosted console therefore does not claim that a StudioNet decision
+is appealable or render an Appeal button. Appeal support remains a protocol
+capability to exercise on a network/client profile that exposes the safe appeal
+charge path.
 
 ---
 

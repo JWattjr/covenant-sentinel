@@ -34,12 +34,20 @@ The live queue is pre-seeded and verified at finality:
 | `live-block-001` | `BLOCK` / `CRITICAL` / `SECURITY_CRITICAL_EVIDENCE` | `0x5e157a9de0b4d5ec78e4a2b75473b3e32f8d45738e58d0819f0a0c97ebf18de0` |
 | `live-timelock-001` | `TIMELOCK` / `HIGH` / `CONFLICTING_EVIDENCE` | `0xfb55b965de92821ffa0bd5443b2fda620e9209d0f2bdbbfcf64d4a4a6578000d` |
 | `live-unavailable-001` | `INSUFFICIENT_EVIDENCE` / `HIGH` / `EVIDENCE_UNAVAILABLE` | `0xe10dc2000a1b8d6d42c47d1b4c2ba35aa3361bc066819a78e4efd05401384e03` |
+| `wallet-ui-unavailable-001` | `INSUFFICIENT_EVIDENCE` / `HIGH` / `EVIDENCE_UNAVAILABLE` (browser-wallet path) | `0xdc043ee18c6aa358f67074a6eb01bf5df7e710a47898cf67dcde22c149d60ce6` |
 
 The ALLOW path also finalized vault execution transaction
 `0x7cb06dab93fdce8bbf5209092c50badc7978c2dc8b1a8831041e92441291a2d5`
 and Sentinel callback
 `0x148155f69fe1ff04ca22054439a0e5aee4c44e141ce80ecd3a7763750b22449c`.
 The guarded balance is therefore `24,900 DEMO`, down from `25,000 DEMO`.
+
+The installed stable `genlayer-js` StudioNet profile does not expose the
+appeal, fee-manager, or rounds-storage contracts, so it cannot quote the safe
+appeal charge. The hosted console intentionally hides the Appeal action and
+does not label these StudioNet decisions appealable. Demonstrate the
+accepted-versus-finalized safety boundary here; demonstrate a bonded appeal on
+a network/client profile that exposes the supported appeal path.
 
 ### Local fallback
 
@@ -134,9 +142,10 @@ and violated rule chips, the reason code, and per-source findings tagged `E1`,
 
 > "Consensus has decided. The guarded balance has not changed by a single unit.
 > The vault instruction was emitted with `on=\"finalized\"`, so it is physically
-> undeliverable while this transaction is still appealable. If you disagree with
-> this AI decision, the **Appeal** button is right there — and it is a real
-> appeal bond through the SDK, not a UI gesture."
+> undeliverable until this transaction finalizes. On a network that exposes the
+> safe appeal-charge path, this provisional window is where a bonded appeal can
+> challenge the decision. The current stable StudioNet client does not expose
+> that path, and the UI says so instead of displaying a fake button."
 
 Press **Refresh lifecycle** until the phase reaches `FINALIZED`. The rail lists
 the **child messages** the contract emitted. Refresh the dashboard: the balance
@@ -178,6 +187,10 @@ Conflicting credible sources produce the fourth outcome, `TIMELOCK` with R4 and
 
 ## 4:15 — The emergency path and its honest limit (45s)
 
+Run this section on the local fallback or another deployment with two approved
+evidence domains. The hosted treasury-outcome demo currently approves one
+controlled domain, so its two-domain emergency precondition cannot be met.
+
 Switch the composer to **Emergency**. Sign as the **reporter** account, not the
 governor. File `active-exploit-001` with two URLs on two *different* approved
 domains, requesting 24 hours.
@@ -204,9 +217,9 @@ Finish on the limitation rather than hiding it:
 
 > "Deterministic limits in code. Judgement under consensus with independent
 > validator re-derivation. Untrusted evidence constrained to an allowlist and a
-> closed output schema. Effects gated on finality. An appeal path for the
-> decisions you dispute. That is what a policy engine has to look like before
-> anyone should let an AI near a treasury."
+> closed output schema. Effects gated on finality. Protocol-level appeals where
+> the selected network exposes the safe bonded-appeal path. That is what a
+> policy engine has to look like before anyone should let an AI near a treasury."
 
 ---
 

@@ -95,8 +95,8 @@ export interface CovenantDashboard {
 /**
  * Where a submitted transaction currently sits in the GenLayer lifecycle.
  *
- * `DECIDED` deliberately does not mean "done": a decided transaction is still
- * appealable and its finality-safe child messages have not been delivered.
+ * `DECIDED` deliberately does not mean "done": finality-safe child messages
+ * have not been delivered, and an appeal may be available on supported networks.
  */
 export type TransactionPhase = "SUBMITTED" | "DECIDED" | "FINALIZED" | "FAILED" | "APPEALED";
 
