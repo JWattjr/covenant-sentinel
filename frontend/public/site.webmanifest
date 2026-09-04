@@ -1,16 +1,22 @@
 {
-  "name": "GenLayer Football Market",
-  "short_name": "GenLayer Market",
-  "description": "AI-powered football match predictions on GenLayer blockchain",
+  "name": "Covenant Sentinel",
+  "short_name": "Sentinel",
+  "description": "Policy-bound treasury enforcement with validator consensus and finality-guarded execution on GenLayer.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#9B6AF6",
+  "background_color": "#070B14",
+  "theme_color": "#080B14",
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml"
+    },
+    {
+      "src": "/covenant-sentinel-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

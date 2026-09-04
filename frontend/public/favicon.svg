@@ -1,3 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 97.76 91.93">
-  <path fill="#FFFFFF" d="M44.26 32.35L27.72 67.12L43.29 74.9L0 91.93L44.26 0L44.26 32.35ZM53.5 32.35L70.04 67.12L54.47 74.9L97.76 91.93L53.5 0L53.5 32.35ZM48.64 43.78L58.33 62.94L48.64 67.69L39.47 62.92L48.64 43.78Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Covenant Sentinel</title>
+  <desc id="description">A cyan shield and check mark on a dark navy field.</desc>
+  <defs>
+    <linearGradient id="background" x1="64" y1="32" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#102638"/>
+      <stop offset="1" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="142" y1="102" x2="374" y2="410" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A5F3FC"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <filter id="glow" x="80" y="54" width="352" height="404" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#background)"/>
+  <rect x="12" y="12" width="488" height="488" rx="100" fill="none" stroke="#67E8F9" stroke-opacity=".22" stroke-width="8"/>
+  <path d="M256 87c42 36 92 55 147 58v105c0 91-56 151-147 180-91-29-147-89-147-180V145c55-3 105-22 147-58Z" fill="#22D3EE" fill-opacity=".18" filter="url(#glow)"/>
+  <path d="M256 87c42 36 92 55 147 58v105c0 91-56 151-147 180-91-29-147-89-147-180V145c55-3 105-22 147-58Z" fill="#0A1724" stroke="url(#shield)" stroke-width="20" stroke-linejoin="round"/>
+  <path d="m184 258 48 48 100-105" fill="none" stroke="#ECFEFF" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
