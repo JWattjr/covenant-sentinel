@@ -1,6 +1,7 @@
 {
   "network": "Genlayer Studio Network",
   "deployedAt": "2026-09-04T13:31:29.248Z",
+  "liveContractSourceNote": "The deployed addresses predate commit 1ef4e0e. Local source now enumerates the closed reason-code set in the evaluator prompt; redeploy before claiming byte-for-byte source parity.",
   "sentinelAddress": "0xdE348d4F02f8e8F4362A4146790541b18659809A",
   "vaultAddress": "0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870",
   "policy": {
