@@ -9,7 +9,9 @@
     "version": 1
   },
   "initialDemoBalance": 25000,
+  "postSeedDemoBalance": 24900,
   "frontendUrl": "https://covenant-sentinel.vercel.app",
+  "frontendDeploymentId": "dpl_7VYoKGT5iab57FXGPTdfo6DN3MBh",
   "evidenceFixtureIndex": "https://covenant-sentinel.vercel.app/evidence/index.json",
   "approvedEvidenceDomains": [
     "covenant-sentinel.vercel.app"
@@ -18,6 +20,54 @@
     "approveLiveHost": "0xc2abd0ab8d6e3f464fb0df5a0f04ac26abef583a63b059fc4deb32a38287041c",
     "disableSecurityPlaceholder": "0x96b1c58fb87cf25d0c57740fa365c87d677eac2ff8698fc23aad48eed30c5b00",
     "disableIncidentPlaceholder": "0xf637be74e395a65c4f97a54ea9cf74f641a2657200e229914cc21f87785605b4"
+  },
+  "seededProposals": [
+    {
+      "id": "live-allow-002",
+      "verdict": "ALLOW",
+      "riskLevel": "LOW",
+      "reasonCode": "PURPOSE_ALIGNED",
+      "status": "EXECUTED",
+      "executionStatus": "SUCCEEDED",
+      "submissionTransaction": "0x2392ffc4e633eae0822cc749b357b1c0d9bf3b39e2b089baae98792158d81735",
+      "evaluationTransaction": "0xe4988b34ff3f92033513c94499073261f51abce2f0313f1d0020b8848bd53054",
+      "vaultExecutionTransaction": "0x7cb06dab93fdce8bbf5209092c50badc7978c2dc8b1a8831041e92441291a2d5",
+      "sentinelCallbackTransaction": "0x148155f69fe1ff04ca22054439a0e5aee4c44e141ce80ecd3a7763750b22449c"
+    },
+    {
+      "id": "live-block-001",
+      "verdict": "BLOCK",
+      "riskLevel": "CRITICAL",
+      "reasonCode": "SECURITY_CRITICAL_EVIDENCE",
+      "status": "BLOCK",
+      "executionStatus": "NOT_QUEUED",
+      "submissionTransaction": "0x30c7aa794e7f44aa1f2d30f8a6b46090f4379ed85e3f30be2b5bde7ae8293226",
+      "evaluationTransaction": "0x5e157a9de0b4d5ec78e4a2b75473b3e32f8d45738e58d0819f0a0c97ebf18de0"
+    },
+    {
+      "id": "live-timelock-001",
+      "verdict": "TIMELOCK",
+      "riskLevel": "HIGH",
+      "reasonCode": "CONFLICTING_EVIDENCE",
+      "status": "TIMELOCK",
+      "executionStatus": "NOT_QUEUED",
+      "submissionTransaction": "0x33457fbd86c4f66af2be00280c86f33106425ed173f97cf97424be26b9f0ab14",
+      "evaluationTransaction": "0xfb55b965de92821ffa0bd5443b2fda620e9209d0f2bdbbfcf64d4a4a6578000d"
+    },
+    {
+      "id": "live-unavailable-001",
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "riskLevel": "HIGH",
+      "reasonCode": "EVIDENCE_UNAVAILABLE",
+      "status": "INSUFFICIENT_EVIDENCE",
+      "executionStatus": "NOT_QUEUED",
+      "submissionTransaction": "0x0acdfc01a7b7a213ece6d1b9ea1935eb9d907c6178d5947b833d121b54861015",
+      "evaluationTransaction": "0xe10dc2000a1b8d6d42c47d1b4c2ba35aa3361bc066819a78e4efd05401384e03"
+    }
+  ],
+  "diagnostics": {
+    "revertedCliSubmission": "0xfb89557c7c4ceaae112f97acdc3c664d576d893135e54bab4f3671922abba0ff",
+    "revertedPreMappingEvaluation": "0x3751d57efab2391cf112116f2974adf3f741b02115574f8cdf80c1e6c6bf3146"
   },
   "emergencyReporter": "0x2c8eb5db1105a85be66badafed88d10cf393cdd8"
 }

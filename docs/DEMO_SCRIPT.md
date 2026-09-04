@@ -26,6 +26,21 @@ The dashboard serializes reads and refreshes every two minutes to remain under
 StudioNet's 500-request-per-hour public RPC limit. Reload only when you need an
 immediate refresh; many open tabs share the same IP budget.
 
+The live queue is pre-seeded and verified at finality:
+
+| Proposal | Final result | Evaluation transaction |
+| --- | --- | --- |
+| `live-allow-002` | `ALLOW` / `LOW` / `PURPOSE_ALIGNED` → `EXECUTED` / `SUCCEEDED` | `0xe4988b34ff3f92033513c94499073261f51abce2f0313f1d0020b8848bd53054` |
+| `live-block-001` | `BLOCK` / `CRITICAL` / `SECURITY_CRITICAL_EVIDENCE` | `0x5e157a9de0b4d5ec78e4a2b75473b3e32f8d45738e58d0819f0a0c97ebf18de0` |
+| `live-timelock-001` | `TIMELOCK` / `HIGH` / `CONFLICTING_EVIDENCE` | `0xfb55b965de92821ffa0bd5443b2fda620e9209d0f2bdbbfcf64d4a4a6578000d` |
+| `live-unavailable-001` | `INSUFFICIENT_EVIDENCE` / `HIGH` / `EVIDENCE_UNAVAILABLE` | `0xe10dc2000a1b8d6d42c47d1b4c2ba35aa3361bc066819a78e4efd05401384e03` |
+
+The ALLOW path also finalized vault execution transaction
+`0x7cb06dab93fdce8bbf5209092c50badc7978c2dc8b1a8831041e92441291a2d5`
+and Sentinel callback
+`0x148155f69fe1ff04ca22054439a0e5aee4c44e141ce80ecd3a7763750b22449c`.
+The guarded balance is therefore `24,900 DEMO`, down from `25,000 DEMO`.
+
 ### Local fallback
 
 Two terminals, plus a browser.

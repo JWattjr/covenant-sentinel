@@ -690,8 +690,11 @@ REQUESTED PAUSE HOURS: {proposal.requested_pause_hours}
 
 Decision rules:
 - R1 is deterministic and already satisfied for a submitted transfer.
+- reason_code must be one of: {", ".join(REASON_CODES)}.
 - For a transfer, ALLOW only if evidence and purpose materially support
   protocol development, security, infrastructure, or approved community work.
+- Use PURPOSE_ALIGNED for a compliant transfer, SECURITY_CRITICAL_EVIDENCE for
+  an unresolved critical-risk block, and CONFLICTING_EVIDENCE for a timelock.
 - Credible unresolved critical exploit or active loss evidence violates R3 and
   should BLOCK a transfer.
 - Materially conflicting credible safety evidence violates R4 and should

@@ -7,6 +7,10 @@
     "A separate simulated security assessor could still reproduce the critical authorization bypass after the claimed remediation.",
     "This assessment recommends no treasury interaction until the conflicting findings are reconciled."
   ],
-  "expected_policy_signal": "This materially conflicts with the safe assessment; immediate execution must be timelocked under R4.",
+  "policy_mapping": {
+    "combined_verdict": "TIMELOCK",
+    "reason_code": "CONFLICTING_EVIDENCE",
+    "violated_rules": ["R4"]
+  },
   "notice": "Synthetic evidence fixture for a public hackathon demonstration."
 }

@@ -7,6 +7,10 @@
     "The simulated target completed remediation and an independent retest found no exploitable critical issue.",
     "This assessment recommends that normal integrations may resume."
   ],
-  "expected_policy_signal": "This source supports proceeding, but it must be reconciled with other current evidence.",
+  "policy_mapping": {
+    "combined_verdict": "TIMELOCK",
+    "reason_code": "CONFLICTING_EVIDENCE",
+    "violated_rules": ["R4"]
+  },
   "notice": "Synthetic evidence fixture for a public hackathon demonstration."
 }
