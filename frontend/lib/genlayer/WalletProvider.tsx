@@ -51,7 +51,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   // Check MetaMask installation and load account on mount
   useEffect(() => {
     const initWallet = async () => {
-      const installed = isMetaMaskInstalled();
+      const installed = await isMetaMaskInstalled();
 
       if (!installed) {
         setState({
@@ -119,11 +119,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   // Set up MetaMask event listeners (ONCE for entire app)
   useEffect(() => {
-    const provider = getEthereumProvider();
-
-    if (!provider) {
-      return;
-    }
+    let provider = getEthereumProvider();
+    let disposed = false;
 
     const handleAccountsChanged = async (accounts: string[]) => {
       const chainId = await getCurrentChainId();
@@ -167,13 +164,24 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       }));
     };
 
-    // Add event listeners
-    provider.on("accountsChanged", handleAccountsChanged);
-    provider.on("chainChanged", handleChainChanged);
-    provider.on("disconnect", handleDisconnect);
+    const attachListeners = async () => {
+      if (!provider) {
+        await isMetaMaskInstalled();
+        provider = getEthereumProvider();
+      }
+      if (!provider || disposed) return;
+
+      provider.on("accountsChanged", handleAccountsChanged);
+      provider.on("chainChanged", handleChainChanged);
+      provider.on("disconnect", handleDisconnect);
+    };
+
+    void attachListeners();
 
     // Cleanup
     return () => {
+      disposed = true;
+      if (!provider) return;
       provider.removeListener("accountsChanged", handleAccountsChanged);
       provider.removeListener("chainChanged", handleChainChanged);
       provider.removeListener("disconnect", handleDisconnect);

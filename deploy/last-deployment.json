@@ -12,11 +12,21 @@
   "initialDemoBalance": 25000,
   "postSeedDemoBalance": 24900,
   "frontendUrl": "https://covenant-sentinel.vercel.app",
-  "frontendDeploymentId": "dpl_7VYoKGT5iab57FXGPTdfo6DN3MBh",
+  "frontendDeploymentId": "dpl_H4sZBEeCyaLSmfodV6iBAfFSGsAM",
   "evidenceFixtureIndex": "https://covenant-sentinel.vercel.app/evidence/index.json",
   "approvedEvidenceDomains": [
     "covenant-sentinel.vercel.app"
   ],
+  "walletUiVerification": {
+    "checkedAt": "2026-09-04T19:08:06.801Z",
+    "providerSelection": "EIP-6963 MetaMask provider (io.metamask)",
+    "proposalId": "wallet-ui-unavailable-001",
+    "proposalSequence": 5,
+    "observedStatus": "PENDING",
+    "observedExecutionStatus": "NOT_QUEUED",
+    "requestedAmount": 1,
+    "assetId": "DEMO"
+  },
   "evidenceDomainConfigurationTransactions": {
     "approveLiveHost": "0xc2abd0ab8d6e3f464fb0df5a0f04ac26abef583a63b059fc4deb32a38287041c",
     "disableSecurityPlaceholder": "0x96b1c58fb87cf25d0c57740fa365c87d677eac2ff8698fc23aad48eed30c5b00",

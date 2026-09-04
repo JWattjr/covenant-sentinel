@@ -20,18 +20,97 @@ export const GENLAYER_NETWORK = {
   blockExplorerUrls: [],
 };
 
-// Ethereum provider type from window
-interface EthereumProvider {
+// Minimal EIP-1193 surface used by both the wallet UI and genlayer-js.
+export interface EthereumProvider {
   isMetaMask?: boolean;
+  isPhantom?: boolean;
+  providers?: EthereumProvider[];
   request: (args: { method: string; params?: any[] }) => Promise<any>;
   on: (event: string, handler: (...args: any[]) => void) => void;
   removeListener: (event: string, handler: (...args: any[]) => void) => void;
+}
+
+interface Eip6963ProviderDetail {
+  info: {
+    name?: string;
+    rdns?: string;
+  };
+  provider: EthereumProvider;
 }
 
 declare global {
   interface Window {
     ethereum?: EthereumProvider;
   }
+}
+
+let selectedMetaMaskProvider: EthereumProvider | null = null;
+let metaMaskDiscovery: Promise<EthereumProvider | null> | null = null;
+
+function injectedMetaMaskFallback(): EthereumProvider | null {
+  if (typeof window === "undefined") return null;
+
+  const injected = window.ethereum;
+  const providers = Array.isArray(injected?.providers) ? injected.providers : [];
+  const explicitMetaMask = providers.find(
+    (provider) => provider.isMetaMask && !provider.isPhantom,
+  );
+  if (explicitMetaMask) return explicitMetaMask;
+
+  // Some wallets claim `isMetaMask` for compatibility. Never select Phantom's
+  // shim as the MetaMask signer when both extensions are installed.
+  if (injected?.isMetaMask && !injected.isPhantom) return injected;
+  return null;
+}
+
+/**
+ * Resolve MetaMask through EIP-6963 instead of trusting `window.ethereum`.
+ *
+ * Multiple installed wallets can race to define the legacy global. EIP-6963
+ * gives us the actual provider object plus a stable reverse-DNS identity, so
+ * account discovery and transaction signing cannot silently use two wallets.
+ */
+export function discoverMetaMaskProvider(): Promise<EthereumProvider | null> {
+  if (selectedMetaMaskProvider) return Promise.resolve(selectedMetaMaskProvider);
+  if (typeof window === "undefined") return Promise.resolve(null);
+  if (metaMaskDiscovery) return metaMaskDiscovery;
+
+  metaMaskDiscovery = new Promise((resolve) => {
+    const announced: Eip6963ProviderDetail[] = [];
+
+    const onAnnouncement: EventListener = (event) => {
+      const detail = (event as CustomEvent<Eip6963ProviderDetail>).detail;
+      if (!detail?.provider || announced.some((candidate) => candidate.provider === detail.provider)) {
+        return;
+      }
+      announced.push(detail);
+    };
+
+    window.addEventListener("eip6963:announceProvider", onAnnouncement);
+    window.dispatchEvent(new Event("eip6963:requestProvider"));
+
+    window.setTimeout(() => {
+      window.removeEventListener("eip6963:announceProvider", onAnnouncement);
+
+      const exact = announced.find(
+        ({ info, provider }) =>
+          info.rdns?.toLowerCase() === "io.metamask" &&
+          provider.isMetaMask &&
+          !provider.isPhantom,
+      );
+      const named = announced.find(
+        ({ info, provider }) =>
+          info.name?.toLowerCase() === "metamask" &&
+          provider.isMetaMask &&
+          !provider.isPhantom,
+      );
+
+      selectedMetaMaskProvider = exact?.provider ?? named?.provider ?? injectedMetaMaskFallback();
+      resolve(selectedMetaMaskProvider);
+    }, 250);
+  });
+
+  return metaMaskDiscovery;
 }
 
 /**
@@ -46,17 +125,15 @@ export function getStudioUrl(): string {
 /**
  * Check if MetaMask is installed
  */
-export function isMetaMaskInstalled(): boolean {
-  if (typeof window === "undefined") return false;
-  return !!window.ethereum?.isMetaMask;
+export async function isMetaMaskInstalled(): Promise<boolean> {
+  return Boolean(await discoverMetaMaskProvider());
 }
 
 /**
  * Get the Ethereum provider (MetaMask)
  */
 export function getEthereumProvider(): EthereumProvider | null {
-  if (typeof window === "undefined") return null;
-  return window.ethereum || null;
+  return selectedMetaMaskProvider ?? injectedMetaMaskFallback();
 }
 
 /**
@@ -64,7 +141,7 @@ export function getEthereumProvider(): EthereumProvider | null {
  * @returns Array of addresses
  */
 export async function requestAccounts(): Promise<string[]> {
-  const provider = getEthereumProvider();
+  const provider = await discoverMetaMaskProvider();
 
   if (!provider) {
     throw new Error("MetaMask is not installed");
@@ -88,7 +165,7 @@ export async function requestAccounts(): Promise<string[]> {
  * @returns Array of addresses
  */
 export async function getAccounts(): Promise<string[]> {
-  const provider = getEthereumProvider();
+  const provider = await discoverMetaMaskProvider();
 
   if (!provider) {
     return [];
@@ -109,7 +186,7 @@ export async function getAccounts(): Promise<string[]> {
  * Get the current chain ID from MetaMask
  */
 export async function getCurrentChainId(): Promise<string | null> {
-  const provider = getEthereumProvider();
+  const provider = await discoverMetaMaskProvider();
 
   if (!provider) {
     return null;
@@ -130,7 +207,7 @@ export async function getCurrentChainId(): Promise<string | null> {
  * Add GenLayer network to MetaMask
  */
 export async function addGenLayerNetwork(): Promise<void> {
-  const provider = getEthereumProvider();
+  const provider = await discoverMetaMaskProvider();
 
   if (!provider) {
     throw new Error("MetaMask is not installed");
@@ -153,7 +230,7 @@ export async function addGenLayerNetwork(): Promise<void> {
  * Switch to GenLayer network
  */
 export async function switchToGenLayerNetwork(): Promise<void> {
-  const provider = getEthereumProvider();
+  const provider = await discoverMetaMaskProvider();
 
   if (!provider) {
     throw new Error("MetaMask is not installed");
@@ -196,7 +273,7 @@ export async function isOnGenLayerNetwork(): Promise<boolean> {
  * @returns The connected address
  */
 export async function connectMetaMask(): Promise<string> {
-  if (!isMetaMaskInstalled()) {
+  if (!(await isMetaMaskInstalled())) {
     throw new Error("MetaMask is not installed");
   }
 
@@ -224,7 +301,7 @@ export async function connectMetaMask(): Promise<string> {
  * @returns The newly selected account address
  */
 export async function switchAccount(): Promise<string> {
-  const provider = getEthereumProvider();
+  const provider = await discoverMetaMaskProvider();
 
   if (!provider) {
     throw new Error("MetaMask is not installed");
@@ -282,8 +359,8 @@ export function createMetaMaskWalletClient(): WalletClient | null {
  * Create a GenLayer client with MetaMask account
  *
  * Note: The genlayer-js SDK doesn't directly support custom transports like viem.
- * When an address is provided, the SDK will use the window.ethereum provider
- * automatically for transaction signing via MetaMask.
+ * When an address is provided, the SDK uses the explicitly selected EIP-1193
+ * provider for transaction signing via MetaMask.
  */
 export function createGenLayerClient(address?: string) {
   const config: any = {
@@ -292,6 +369,11 @@ export function createGenLayerClient(address?: string) {
 
   if (address) {
     config.account = address as `0x${string}`;
+  }
+
+  const provider = getEthereumProvider();
+  if (provider) {
+    config.provider = provider;
   }
 
   try {

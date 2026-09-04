@@ -119,6 +119,13 @@ Fill in `NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS`,
 `NEXT_PUBLIC_COVENANT_VAULT_ADDRESS`, and `NEXT_PUBLIC_GENLAYER_RPC_URL`, then
 restart `npm run dev` — `NEXT_PUBLIC_*` values are inlined at build time.
 
+Complete one browser-wallet submission before calling the console production
+ready. The console discovers MetaMask by its EIP-6963 identity and reuses that
+same provider for account state and signing; this avoids account/method
+mismatches when another EVM wallet extension also injects `window.ethereum`.
+Verify this once in a browser profile that has the actual extension mix judges
+or operators will use.
+
 ## 5. Routine operations
 
 **Publish a new policy version.** Existing proposals stay bound to the version

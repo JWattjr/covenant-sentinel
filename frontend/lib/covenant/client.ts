@@ -16,6 +16,8 @@ import {
   transactionsStatusNumberToName,
 } from "genlayer-js/types";
 
+import { getEthereumProvider } from "@/lib/genlayer/client";
+
 import type {
   CovenantDashboard,
   CovenantProposal,
@@ -288,13 +290,12 @@ export class CovenantSentinelClient {
     this.sentinel = requireAddress(SENTINEL_ADDRESS, "NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS");
     this.vault = requireAddress(VAULT_ADDRESS, "NEXT_PUBLIC_COVENANT_VAULT_ADDRESS");
     const endpoint = deploymentConfiguration().rpcUrl;
+    const provider = getEthereumProvider();
     this.client = createClient({
       chain: chainForEndpoint(endpoint),
       endpoint,
       ...(account ? { account: account as `0x${string}` } : {}),
-      ...(typeof window !== "undefined" && window.ethereum
-        ? { provider: window.ethereum as never }
-        : {}),
+      ...(provider ? { provider: provider as never } : {}),
     });
   }
 
