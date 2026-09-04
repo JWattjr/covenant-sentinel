@@ -33,10 +33,14 @@ export function useCovenant() {
       return client.getDashboard();
     },
     enabled: Boolean(client),
-    refetchInterval: configured ? 15_000 : false,
+    // One dashboard refresh currently performs at least six `gen_call` reads.
+    // StudioNet allows 500 RPC requests per hour, so a 15-second poll would
+    // exhaust a user's quota even with a single tab. Two minutes leaves room
+    // for proposal rows, transaction tracking, writes, and manual refetches.
+    refetchInterval: configured ? 120_000 : false,
     refetchOnWindowFocus: true,
     staleTime: 5_000,
-    retry: 1,
+    retry: 0,
   });
 
   const afterWrite = useCallback(

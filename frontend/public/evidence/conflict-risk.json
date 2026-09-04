@@ -1,0 +1,12 @@
+{
+  "fixture": "COVENANT-DEMO-CONFLICT-RISK-001",
+  "environment": "StudioNet simulated DEMO treasury",
+  "classification": "credible conflicting risk assessment",
+  "status": "remediation disputed and risk unresolved",
+  "assertions": [
+    "A separate simulated security assessor could still reproduce the critical authorization bypass after the claimed remediation.",
+    "This assessment recommends no treasury interaction until the conflicting findings are reconciled."
+  ],
+  "expected_policy_signal": "This materially conflicts with the safe assessment; immediate execution must be timelocked under R4.",
+  "notice": "Synthetic evidence fixture for a public hackathon demonstration."
+}

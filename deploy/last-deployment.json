@@ -9,9 +9,15 @@
     "version": 1
   },
   "initialDemoBalance": 25000,
+  "frontendUrl": "https://covenant-sentinel.vercel.app",
+  "evidenceFixtureIndex": "https://covenant-sentinel.vercel.app/evidence/index.json",
   "approvedEvidenceDomains": [
-    "security.example.org",
-    "incident.example.net"
+    "covenant-sentinel.vercel.app"
   ],
+  "evidenceDomainConfigurationTransactions": {
+    "approveLiveHost": "0xc2abd0ab8d6e3f464fb0df5a0f04ac26abef583a63b059fc4deb32a38287041c",
+    "disableSecurityPlaceholder": "0x96b1c58fb87cf25d0c57740fa365c87d677eac2ff8698fc23aad48eed30c5b00",
+    "disableIncidentPlaceholder": "0xf637be74e395a65c4f97a54ea9cf74f641a2657200e229914cc21f87785605b4"
+  },
   "emergencyReporter": "0x2c8eb5db1105a85be66badafed88d10cf393cdd8"
 }

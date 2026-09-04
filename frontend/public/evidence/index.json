@@ -1,0 +1,12 @@
+{
+  "name": "Covenant Sentinel StudioNet evidence fixtures",
+  "environment": "public hackathon demonstration",
+  "authoritative_scope": "simulated DEMO treasury only",
+  "notice": "These documents are controlled test fixtures for exercising consensus outcomes. They are not claims about real protocols, companies, assets, or incidents.",
+  "documents": [
+    "allow-security-audit.json",
+    "block-critical-exploit.json",
+    "conflict-safe.json",
+    "conflict-risk.json"
+  ]
+}

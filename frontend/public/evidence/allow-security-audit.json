@@ -1,0 +1,14 @@
+{
+  "fixture": "COVENANT-DEMO-ALLOW-001",
+  "environment": "StudioNet simulated DEMO treasury",
+  "classification": "approved protocol security work",
+  "status": "verified for demonstration",
+  "assertions": [
+    "The requested spend funds an independent review of the Covenant Sentinel intelligent contracts.",
+    "The work covers authorization boundaries, replay protection, evidence parsing, consensus validation, and finality-safe child messages.",
+    "No unresolved exploit, active loss, or prohibited counterparty interaction is associated with this simulated request.",
+    "The request materially advances protocol security and infrastructure and is within the deterministic transfer cap."
+  ],
+  "expected_policy_signal": "R1 and R2 are satisfied; R3 and R4 are not violated",
+  "notice": "Synthetic evidence fixture for a public hackathon demonstration; no real funds or organizations are represented."
+}

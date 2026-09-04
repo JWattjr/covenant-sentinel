@@ -282,6 +282,7 @@ export class CovenantSentinelClient {
   private readonly client: GenLayerClient<GenLayerChain>;
   private readonly sentinel: `0x${string}`;
   private readonly vault: `0x${string}`;
+  private readTail: Promise<void> = Promise.resolve();
 
   constructor(account?: string) {
     this.sentinel = requireAddress(SENTINEL_ADDRESS, "NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS");
@@ -298,7 +299,17 @@ export class CovenantSentinelClient {
   }
 
   private read(address: `0x${string}`, functionName: string, args: CalldataEncodable[] = []) {
-    return this.client.readContract({ address, functionName, args });
+    // StudioNet's public RPC rejects bursts of simultaneous `gen_call`
+    // requests. Keep reads ordered even when dashboard composition uses
+    // Promise.all; a failed read must not poison the queue for later polls.
+    const request = this.readTail.then(() =>
+      this.client.readContract({ address, functionName, args }),
+    );
+    this.readTail = request.then(
+      () => undefined,
+      () => undefined,
+    );
+    return request;
   }
 
   private async writeSentinel(

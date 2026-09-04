@@ -5,6 +5,29 @@ gap between a *decision* and an *irreversible effect*.
 
 ## Before you start
 
+The hosted StudioNet demo is available at
+<https://covenant-sentinel.vercel.app>. It is wired to:
+
+- Sentinel: `0xdE348d4F02f8e8F4362A4146790541b18659809A`
+- Guarded Vault: `0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870`
+- Network: GenLayer Studio Network (`61999`)
+
+Use these controlled, synthetic evidence fixtures for the four treasury
+outcomes. They make no claims about a real protocol, organization, or incident.
+
+| Outcome | Evidence URL(s) |
+| --- | --- |
+| `ALLOW` | `https://covenant-sentinel.vercel.app/evidence/allow-security-audit.json` |
+| `BLOCK` | `https://covenant-sentinel.vercel.app/evidence/block-critical-exploit.json` |
+| `TIMELOCK` | `https://covenant-sentinel.vercel.app/evidence/conflict-safe.json` and `https://covenant-sentinel.vercel.app/evidence/conflict-risk.json` |
+| `INSUFFICIENT_EVIDENCE` | `https://covenant-sentinel.vercel.app/evidence/unavailable.json` (intentionally 404) |
+
+The dashboard serializes reads and refreshes every two minutes to remain under
+StudioNet's 500-request-per-hour public RPC limit. Reload only when you need an
+immediate refresh; many open tabs share the same IP budget.
+
+### Local fallback
+
 Two terminals, plus a browser.
 
 **Terminal 1 — local simulator (Windows):**
