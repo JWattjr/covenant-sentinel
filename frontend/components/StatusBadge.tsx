@@ -1,34 +1,36 @@
 const styles: Record<string, string> = {
   // Proposal lifecycle
-  PENDING: "border-amber-300/25 bg-amber-300/10 text-amber-200",
-  EVALUATING: "border-sky-300/25 bg-sky-300/10 text-sky-200",
-  EXECUTION_QUEUED: "border-indigo-300/25 bg-indigo-300/10 text-indigo-200",
-  EXECUTED: "border-emerald-300/25 bg-emerald-300/10 text-emerald-200",
-  CANCELLED: "border-slate-400/20 bg-slate-400/10 text-slate-300",
+  PENDING: "border-amber-700/20 bg-amber-100 text-amber-900",
+  EVALUATING: "border-sky-700/20 bg-sky-100 text-sky-900",
+  EXECUTION_QUEUED: "border-indigo-700/20 bg-indigo-100 text-indigo-900",
+  EXECUTED: "border-emerald-700/20 bg-emerald-100 text-emerald-900",
+  CANCELLED: "border-slate-700/20 bg-slate-100 text-slate-800",
 
   // Verdicts
-  ALLOW: "border-emerald-300/25 bg-emerald-300/10 text-emerald-200",
-  TIMELOCK: "border-violet-300/25 bg-violet-300/10 text-violet-200",
-  BLOCK: "border-rose-300/25 bg-rose-300/10 text-rose-200",
-  INSUFFICIENT_EVIDENCE: "border-orange-300/25 bg-orange-300/10 text-orange-200",
+  ALLOW: "border-emerald-700/20 bg-emerald-100 text-emerald-900",
+  TIMELOCK: "border-violet-700/20 bg-violet-100 text-violet-900",
+  BLOCK: "border-rose-700/20 bg-rose-100 text-rose-900",
+  INSUFFICIENT_EVIDENCE: "border-orange-700/20 bg-orange-100 text-orange-900",
 
   // Risk levels
-  LOW: "border-emerald-300/25 bg-emerald-300/10 text-emerald-200",
-  MEDIUM: "border-amber-300/25 bg-amber-300/10 text-amber-200",
-  HIGH: "border-orange-300/25 bg-orange-300/10 text-orange-200",
-  CRITICAL: "border-rose-300/25 bg-rose-300/10 text-rose-200",
+  LOW: "border-emerald-700/20 bg-emerald-100 text-emerald-900",
+  MEDIUM: "border-amber-700/20 bg-amber-100 text-amber-900",
+  HIGH: "border-orange-700/20 bg-orange-100 text-orange-900",
+  CRITICAL: "border-rose-700/20 bg-rose-100 text-rose-900",
 
   // Transaction lifecycle
-  SUBMITTED: "border-sky-300/25 bg-sky-300/10 text-sky-200",
-  DECIDED: "border-amber-300/25 bg-amber-300/10 text-amber-200",
-  FINALIZED: "border-emerald-300/25 bg-emerald-300/10 text-emerald-200",
-  FAILED: "border-rose-300/25 bg-rose-300/10 text-rose-200",
-  APPEALED: "border-violet-300/25 bg-violet-300/10 text-violet-200",
+  SUBMITTED: "border-sky-700/20 bg-sky-100 text-sky-900",
+  DECIDED: "border-amber-700/20 bg-amber-100 text-amber-900",
+  FINALIZED: "border-emerald-700/20 bg-emerald-100 text-emerald-900",
+  FAILED: "border-rose-700/20 bg-rose-100 text-rose-900",
+  APPEALED: "border-violet-700/20 bg-violet-100 text-violet-900",
 
-  UNKNOWN: "border-slate-400/20 bg-slate-400/10 text-slate-300",
+  UNKNOWN: "border-slate-700/20 bg-slate-100 text-slate-800",
 };
 
 function readable(value: string) {
+  if (value === "TIMELOCK") return "On hold";
+  if (value === "INSUFFICIENT_EVIDENCE") return "Evidence missing";
   return value.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 

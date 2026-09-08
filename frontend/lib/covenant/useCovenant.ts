@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useWallet } from "@/lib/genlayer/wallet";
 
 import { CovenantSentinelClient, hasDeploymentConfiguration } from "./client";
+import { DashboardReadError, readDashboard } from "./dashboard-read";
 import type { EmergencyDraft, TransactionSnapshot, TransferDraft } from "./types";
 
 const MAX_TRACKED_TRANSACTIONS = 8;
@@ -29,18 +30,23 @@ export function useCovenant() {
   const dashboard = useQuery({
     queryKey: ["covenant-sentinel", "dashboard"],
     queryFn: () => {
-      if (!client) throw new Error("Deployment is not configured.");
-      return client.getDashboard();
+      if (!configured) {
+        throw new DashboardReadError("Deployment is not configured.", "MISCONFIGURED");
+      }
+      return readDashboard();
     },
-    enabled: Boolean(client),
-    // One dashboard refresh currently performs at least six `gen_call` reads.
-    // StudioNet allows 500 RPC requests per hour, so a 15-second poll would
-    // exhaust a user's quota even with a single tab. Two minutes leaves room
-    // for proposal rows, transaction tracking, writes, and manual refetches.
+    enabled: configured,
+    // The same-origin endpoint shares one two-minute StudioNet snapshot across
+    // public visitors. Reconnects recover without focus events multiplying the
+    // upstream read sequence.
     refetchInterval: configured ? 120_000 : false,
-    refetchOnWindowFocus: true,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: false,
     staleTime: 5_000,
-    retry: 0,
+    retry: (failureCount, error) =>
+      !(error instanceof DashboardReadError && error.code === "RATE_LIMITED") &&
+      failureCount < 1,
+    retryDelay: 1_500,
   });
 
   const afterWrite = useCallback(

@@ -3,51 +3,88 @@
 A five-minute walkthrough that shows all four safe outcomes and, crucially, the
 gap between a *decision* and an *irreversible effect*.
 
+## 60-second reviewer walkthrough
+
+No wallet or transaction is required.
+
+**0:00–0:10 — Open Explorer.** Point out that this is live StudioNet contract
+state for a simulated DEMO treasury using controlled synthetic evidence. The
+page never replaces a failed read with sample records; if StudioNet is busy,
+use **Try live read again**.
+
+**0:10–0:35 — Open `live-audit-001`.** Show `ALLOW`, `LOW`,
+`PURPOSE_ALIGNED`, its satisfied rules and the per-source validator finding.
+Finish on vault execution: `SUCCEEDED` means the simulated guarded vault
+acknowledged a finality-safe instruction; the verdict alone did not move value.
+
+**0:35–0:55 — Open `live-bridge-001`.** Show `BLOCK`, `CRITICAL`,
+`SECURITY_CRITICAL_EVIDENCE`, violated rule R3 and `NOT_QUEUED`. No vault
+instruction exists for the blocked request.
+
+**0:55–1:00 — Close.** “Same policy engine, two evidence-backed outcomes:
+one finalized DEMO action and one refusal. The evidence and execution record
+remain inspectable without connecting a wallet.”
+
 ## Before you start
 
-The hosted StudioNet demo is available at
-<https://covenant-sentinel.vercel.app>. It is wired to:
+The hosted StudioNet demo is at <https://covenant-sentinel.vercel.app>, wired to:
 
-- Sentinel: `0xdE348d4F02f8e8F4362A4146790541b18659809A`
-- Guarded Vault: `0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870`
+- Sentinel: `0x7CeA0E0D9E2a343C29fdDa253d3925c3Aba9b924`
+- Guarded Vault: `0xEB10CF48D9EffA69b66d9013289F5206631E86e9`
 - Network: GenLayer Studio Network (`61999`)
 
-Use these controlled, synthetic evidence fixtures for the four treasury
-outcomes. They make no claims about a real protocol, organization, or incident.
+The evidence fixtures are controlled and synthetic. They make no claims about a
+real protocol, organization, or incident — and, deliberately, they name **no
+verdict, reason code, or rule ID**. They state observable facts and let the
+evaluator do the judging; `scripts/check_evidence_fixtures.py` fails CI if that
+ever regresses. This matters on stage: the outcomes below were derived, not
+transcribed.
 
-| Outcome | Evidence URL(s) |
+| Exercises | Evidence URL(s) |
 | --- | --- |
-| `ALLOW` | `https://covenant-sentinel.vercel.app/evidence/allow-security-audit.json` |
-| `BLOCK` | `https://covenant-sentinel.vercel.app/evidence/block-critical-exploit.json` |
-| `TIMELOCK` | `https://covenant-sentinel.vercel.app/evidence/conflict-safe.json` and `https://covenant-sentinel.vercel.app/evidence/conflict-risk.json` |
-| `INSUFFICIENT_EVIDENCE` | `https://covenant-sentinel.vercel.app/evidence/unavailable.json` (intentionally 404) |
+| Aligned purpose, clean counterparty | `/evidence/allow-security-audit.json` |
+| Unpatched, actively exploited target | `/evidence/block-critical-exploit.json` |
+| Two assessors who disagree | `/evidence/conflict-safe.json` and `/evidence/conflict-risk.json` |
+| Approved host, non-2xx response | `/evidence/unavailable.json` (intentionally 404) |
 
-The dashboard serializes reads and refreshes every two minutes to remain under
-StudioNet's 500-request-per-hour public RPC limit. Reload only when you need an
-immediate refresh; many open tabs share the same IP budget.
+The public dashboard reads through a same-origin endpoint that serializes the
+contract calls and shares a two-minute verified snapshot across visitors. This
+keeps browser CORS restrictions and repeated tabs from multiplying StudioNet's
+500-request-per-hour public RPC budget. A failed read stays visibly unavailable
+and can be retried; it is never replaced with sample records.
 
 The live queue is pre-seeded and verified at finality:
 
-| Proposal | Final result | Evaluation transaction |
+| Proposal | Outcome produced by consensus | Evaluation transaction |
 | --- | --- | --- |
-| `live-allow-002` | `ALLOW` / `LOW` / `PURPOSE_ALIGNED` → `EXECUTED` / `SUCCEEDED` | `0xe4988b34ff3f92033513c94499073261f51abce2f0313f1d0020b8848bd53054` |
-| `live-block-001` | `BLOCK` / `CRITICAL` / `SECURITY_CRITICAL_EVIDENCE` | `0x5e157a9de0b4d5ec78e4a2b75473b3e32f8d45738e58d0819f0a0c97ebf18de0` |
-| `live-timelock-001` | `TIMELOCK` / `HIGH` / `CONFLICTING_EVIDENCE` | `0xfb55b965de92821ffa0bd5443b2fda620e9209d0f2bdbbfcf64d4a4a6578000d` |
-| `live-unavailable-001` | `INSUFFICIENT_EVIDENCE` / `HIGH` / `EVIDENCE_UNAVAILABLE` | `0xe10dc2000a1b8d6d42c47d1b4c2ba35aa3361bc066819a78e4efd05401384e03` |
-| `wallet-ui-unavailable-001` | `INSUFFICIENT_EVIDENCE` / `HIGH` / `EVIDENCE_UNAVAILABLE` (browser-wallet path) | `0xdc043ee18c6aa358f67074a6eb01bf5df7e710a47898cf67dcde22c149d60ce6` |
+| `live-audit-001` | `ALLOW` / `LOW` / `PURPOSE_ALIGNED` → `EXECUTED` / `SUCCEEDED` | `0x5ebe23fd243a3d712b46ba8cce2f33620bdb5a06bda8be84b2768d99d3726c14` |
+| `live-bridge-001` | `BLOCK` / `CRITICAL` / `SECURITY_CRITICAL_EVIDENCE` | `0xb9490b3ec63d98dbd3a262682d69a20a21aed0ee97ce90beb1574055d111eeb5` |
+| `live-contested-001` | `TIMELOCK` / `HIGH` / `CONFLICTING_EVIDENCE` | `0x149cca4b63c93580db26045d0e642da889fd85308e66b46b45c19b14a17f5c06` |
+| `live-offline-001` | `INSUFFICIENT_EVIDENCE` / `HIGH` / `EVIDENCE_UNAVAILABLE` | `0xf91277ead3c6f7ce4f2e0192e36f696630cfd85f9f8aeeee35b3e3943bb06f5b` |
 
-The ALLOW path also finalized vault execution transaction
-`0x7cb06dab93fdce8bbf5209092c50badc7978c2dc8b1a8831041e92441291a2d5`
-and Sentinel callback
-`0x148155f69fe1ff04ca22054439a0e5aee4c44e141ce80ecd3a7763750b22449c`.
+The allowed proposal released its vault instruction only after the evaluation
+finalized, and the vault acknowledged only after its own execution:
+
+```
+evaluate 0x5ebe23fd…d3726c14
+  └─ vault execution 0x51a5ea38…74394a63
+       └─ Sentinel callback 0x6a5101c5…0359ed1c
+```
+
 The guarded balance is therefore `24,900 DEMO`, down from `25,000 DEMO`.
 
-The installed stable `genlayer-js` StudioNet profile does not expose the
-appeal, fee-manager, or rounds-storage contracts, so it cannot quote the safe
-appeal charge. The hosted console intentionally hides the Appeal action and
-does not label these StudioNet decisions appealable. Demonstrate the
-accepted-versus-finalized safety boundary here; demonstrate a bonded appeal on
-a network/client profile that exposes the supported appeal path.
+Re-seed a fresh deployment on any network with one command:
+
+```bash
+COVENANT_SEED_LIVE_DEMO=1 COVENANT_EVIDENCE_DOMAINS=covenant-sentinel.vercel.app genlayer deploy
+```
+
+The installed stable `genlayer-js` StudioNet profile does not expose the appeal,
+fee-manager, or rounds-storage contracts, so it cannot quote the safe appeal
+charge. The hosted console intentionally hides the Appeal action and does not
+label these StudioNet decisions appealable. Demonstrate the accepted-versus-
+finalized safety boundary here; demonstrate a bonded appeal on a network/client
+profile that exposes the supported appeal path.
 
 ### Local fallback
 
@@ -116,11 +153,11 @@ Submit a legitimate request:
 
 | Field | Value |
 | --- | --- |
-| Action ID | `security-audit-001` |
+| Action ID | `demo-audit-001` (any unused id) |
 | Recipient | any address other than the governor |
 | Amount | comfortably under the cap |
-| Purpose | `Independent protocol security audit` |
-| Evidence | one HTTPS URL on an approved domain |
+| Purpose | `Independent review of the Covenant Sentinel intelligent contracts` |
+| Evidence | `https://covenant-sentinel.vercel.app/evidence/allow-security-audit.json` |
 
 Select it in the queue, then press **Evaluate through consensus**.
 
@@ -159,8 +196,10 @@ has now dropped and the proposal reads `EXECUTED` / `SUCCEEDED`.
 
 ## 2:45 — BLOCK on security evidence (45s)
 
-Submit `bridge-integration-001` with evidence describing an unresolved critical
-exploit at the counterparty, and evaluate.
+Submit `demo-bridge-001` with
+`https://covenant-sentinel.vercel.app/evidence/block-critical-exploit.json`
+as its evidence, and evaluate. That fixture describes an unpatched, actively
+exploited authorization bypass — it never says the word "block".
 
 Result: `BLOCK`, `SECURITY_CRITICAL_EVIDENCE`, R3 in the violated chips,
 execution state `NOT_QUEUED`.
@@ -172,7 +211,9 @@ execution state `NOT_QUEUED`.
 
 ## 3:30 — Fail closed (45s)
 
-Submit a proposal whose evidence host returns a 5xx, then evaluate.
+Submit `demo-offline-001` pointing at
+`https://covenant-sentinel.vercel.app/evidence/unavailable.json`
+— an approved host with no document there — then evaluate.
 
 Result: `INSUFFICIENT_EVIDENCE`, reason `EVIDENCE_UNAVAILABLE`, risk `HIGH`.
 
@@ -180,8 +221,13 @@ Result: `INSUFFICIENT_EVIDENCE`, reason `EVIDENCE_UNAVAILABLE`, risk `HIGH`.
 > short-circuits deterministically. The failure mode of this system is refusal,
 > never optimism."
 
-Conflicting credible sources produce the fourth outcome, `TIMELOCK` with R4 and
-`CONFLICTING_EVIDENCE` — a decision to *wait*, not to act.
+Conflicting credible sources produce the fourth outcome. Submit one proposal
+carrying **both** `https://covenant-sentinel.vercel.app/evidence/conflict-safe.json`
+and `https://covenant-sentinel.vercel.app/evidence/conflict-risk.json`:
+two independent assessors, same target, same patch, opposite conclusions. The
+result is `TIMELOCK` with R4 and `CONFLICTING_EVIDENCE` — a decision to *wait*,
+not to act. Neither fixture asks for a timelock; the evaluator infers it from the
+disagreement.
 
 ---
 

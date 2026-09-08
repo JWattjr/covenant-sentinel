@@ -2,15 +2,18 @@
 
 A Next.js dashboard for the Covenant Sentinel intelligent contracts. It is a
 deliberately **untrusted convenience layer**: it prepares inputs, displays
-contract state, follows the GenLayer transaction lifecycle, and can post an
-appeal bond. It never computes, caches, or persists an authoritative verdict.
+contract state and follows the GenLayer transaction lifecycle. It never
+computes or persists an authoritative verdict. Public reads are cached briefly
+as verified StudioNet snapshots; wallet-signed writes remain direct.
 
 ## Design rules this console follows
 
 1. **No invented state.** Every number on screen comes from a `readContract`
    call against the deployed pair. With no addresses configured, the page shows
    an explicit *"Deployment not configured"* panel naming the missing variables —
-   not a demo dataset. If a read fails, the error is shown verbatim.
+   not a demo dataset. Public reads use `/api/dashboard`, which shares a
+   two-minute response across visitors. Failed reads are classified, recoverable
+   and never replaced with sample records or zero values.
 2. **Decided ≠ done.** A GenLayer receipt is treated as successful only when the
    consensus status is decided **and** the GenVM execution result is
    `FINISHED_WITH_RETURN`. The lifecycle rail distinguishes `SUBMITTED`,
@@ -100,8 +103,8 @@ TanStack Query · `genlayer-js` · MetaMask via `window.ethereum`.
 ## Layout
 
 ```
-app/            layout, providers, and the single console page
-components/     console panels (queue, detail, composer, rail, overview)
-lib/covenant/   typed SDK client, dashboard hook, shared types
+app/            Home, Explorer, Submit, Operate, providers, and read API route
+components/     shared chrome, read states, queue, detail, composer, and rail
+lib/covenant/   server reader, typed write client, dashboard hook, shared types
 lib/genlayer/   wallet provider and MetaMask/network helpers
 ```

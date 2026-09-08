@@ -41,6 +41,10 @@ jobs:
       # Deterministic guardrails, adversarial evidence, policy management,
       # proposal lifecycle, and vault authorization — with mocked web and LLM.
       - run: pytest tests/direct/ -v
+      # A demo fixture that names its own verdict turns the live demo into
+      # transcription instead of judgement. Guard it in CI, not in review.
+      - name: Evidence fixtures state facts, not verdicts
+        run: python scripts/check_evidence_fixtures.py
 
   frontend:
     name: Frontend typecheck and build

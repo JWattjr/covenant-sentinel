@@ -14,8 +14,8 @@ export function WalletControl() {
   if (isConnected && address) {
     return (
       <div className="flex items-center gap-2">
-        <div className="hidden items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-slate-300 sm:flex">
-          <span className={`size-1.5 rounded-full ${isOnCorrectNetwork ? "bg-emerald-300" : "bg-amber-300"}`} />
+        <div className="hidden items-center gap-2 rounded-full bg-[#ecece8] px-3 py-2 text-xs text-[#454742] sm:flex">
+          <span className={`size-1.5 rounded-full ${isOnCorrectNetwork ? "bg-emerald-600" : "bg-amber-600"}`} />
           <span className="font-mono">{shortAddress(address)}</span>
         </div>
         <button

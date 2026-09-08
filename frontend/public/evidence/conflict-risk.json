@@ -1,16 +1,19 @@
 {
-  "fixture": "COVENANT-DEMO-CONFLICT-RISK-001",
-  "environment": "StudioNet simulated DEMO treasury",
-  "classification": "credible conflicting risk assessment",
-  "status": "remediation disputed and risk unresolved",
-  "assertions": [
-    "A separate simulated security assessor could still reproduce the critical authorization bypass after the claimed remediation.",
-    "This assessment recommends no treasury interaction until the conflicting findings are reconciled."
-  ],
-  "policy_mapping": {
-    "combined_verdict": "TIMELOCK",
-    "reason_code": "CONFLICTING_EVIDENCE",
-    "violated_rules": ["R4"]
+  "document_id": "COVENANT-DEMO-ASSESSMENT-B",
+  "document_type": "security assessment",
+  "synthetic": true,
+  "notice": "Synthetic fixture for a public hackathon demonstration. No real organization, protocol, asset, exploit, or loss is represented.",
+  "assessor": "Simulated assessor B",
+  "subject": "Simulated integration target 'Demo Bridge Alpha'",
+  "findings": {
+    "remediation_reviewed": true,
+    "retest_result": "The withdrawal authorization bypass was still reproduced after the deployed fix.",
+    "residual_critical_findings": 1,
+    "conclusion": "Assessor B advises against treasury interaction until the disagreement is resolved."
   },
-  "notice": "Synthetic evidence fixture for a public hackathon demonstration."
+  "observations": [
+    "Assessor B reviewed the same deployed patch as assessor A and reached the opposite conclusion.",
+    "Both assessors are independent and neither has withdrawn its report.",
+    "The disagreement concerns whether the critical issue is actually fixed, and it remains open."
+  ]
 }

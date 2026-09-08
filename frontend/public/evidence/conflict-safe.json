@@ -1,16 +1,19 @@
 {
-  "fixture": "COVENANT-DEMO-CONFLICT-SAFE-001",
-  "environment": "StudioNet simulated DEMO treasury",
-  "classification": "credible safety assessment",
-  "status": "safe according to this assessment",
-  "assertions": [
-    "The simulated target completed remediation and an independent retest found no exploitable critical issue.",
-    "This assessment recommends that normal integrations may resume."
-  ],
-  "policy_mapping": {
-    "combined_verdict": "TIMELOCK",
-    "reason_code": "CONFLICTING_EVIDENCE",
-    "violated_rules": ["R4"]
+  "document_id": "COVENANT-DEMO-ASSESSMENT-A",
+  "document_type": "security assessment",
+  "synthetic": true,
+  "notice": "Synthetic fixture for a public hackathon demonstration. No real organization, protocol, asset, exploit, or loss is represented.",
+  "assessor": "Simulated assessor A",
+  "subject": "Simulated integration target 'Demo Bridge Alpha'",
+  "findings": {
+    "remediation_reviewed": true,
+    "retest_result": "No exploitable critical issue reproduced after the deployed fix.",
+    "residual_critical_findings": 0,
+    "conclusion": "Assessor A considers normal integrations safe to resume."
   },
-  "notice": "Synthetic evidence fixture for a public hackathon demonstration."
+  "observations": [
+    "Assessor A reviewed the deployed patch and could not reproduce the withdrawal authorization bypass.",
+    "Assessor A is aware that a separate assessor has published a different conclusion about the same target and the same patch.",
+    "The two assessments have not been reconciled."
+  ]
 }

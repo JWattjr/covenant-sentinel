@@ -83,6 +83,15 @@ consistent* ALLOW on a page that every validator also fetches would pass. The
 mitigations against that are the domain allowlist, independent validator
 refetching, and the appeal window — not the schema.
 
+**This applies to our own demo fixtures.** An early revision of the StudioNet
+evidence fixtures carried a `policy_mapping` block naming the expected verdict,
+reason code, and rule IDs. Nothing in the contract rejected it — the resulting
+answer was well-formed and every validator fetched the same page — so the
+evaluator was transcribing a verdict rather than deriving one. That is precisely
+the residual risk above, demonstrated against ourselves. The fixtures now state
+observable facts only, and `frontend/public/evidence/README.md` records the rule
+that they must never name a verdict, reason code, or rule ID again.
+
 ---
 
 ## Adversary 3 — A dishonest leader

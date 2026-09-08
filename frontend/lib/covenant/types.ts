@@ -83,6 +83,8 @@ export interface GuardedVaultConfiguration {
 }
 
 export interface CovenantDashboard {
+  /** Server observation time for the cached, verified public snapshot. */
+  observedAt?: string;
   /** `null` before the governor has published the first policy version. */
   policy: PolicyVersion | null;
   proposals: CovenantProposal[];

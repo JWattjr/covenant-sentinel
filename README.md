@@ -88,13 +88,16 @@ finalized as different things, on purpose.
 ## Repository layout
 
 ```
-contracts/            CovenantSentinel + SentinelVault intelligent contracts
-tests/direct/         16 fast in-memory tests with mocked web and LLM
-tests/integration/     5 full five-validator consensus tests against GLSim
-deploy/deployScript.ts Ordered, verified deployment and wiring
-frontend/             Next.js operator console (see frontend/README.md)
-config/               GenLayer config plus a Windows GLSim launcher
-docs/                 Architecture, decisions, threat model, demo, pitch, ops
+contracts/              CovenantSentinel + SentinelVault intelligent contracts
+tests/direct/           16 fast in-memory tests with mocked web and LLM
+tests/integration/       5 full five-validator consensus tests against GLSim
+deploy/deployScript.ts  Ordered, verified deployment and wiring
+deploy/seedLiveDemo.ts  Opt-in seeding of the four demo outcomes
+scripts/                CI guards (evidence fixtures state facts, not verdicts)
+frontend/               Next.js operator console (see frontend/README.md)
+frontend/public/evidence  Synthetic evidence fixtures for the live demo
+config/                 GenLayer config plus a Windows GLSim launcher
+docs/                   Architecture, decisions, threat model, demo, pitch, ops
 ```
 
 ---
@@ -157,28 +160,57 @@ console at <https://covenant-sentinel.vercel.app>.
 
 | Contract | Address |
 | --- | --- |
-| `CovenantSentinel` | `0xdE348d4F02f8e8F4362A4146790541b18659809A` |
-| `SentinelVault` | `0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870` |
+| `CovenantSentinel` | `0x7CeA0E0D9E2a343C29fdDa253d3925c3Aba9b924` |
+| `SentinelVault` | `0xEB10CF48D9EffA69b66d9013289F5206631E86e9` |
 
-Policy `covenant-v1` v1 has a 10,000 DEMO cap. The guarded balance is 24,900
-DEMO after the verified ALLOW fixture executed, and the active evidence domain
-is `covenant-sentinel.vercel.app`. The queue contains finality-verified ALLOW,
-BLOCK, TIMELOCK, and INSUFFICIENT_EVIDENCE examples plus a real browser-wallet
-fail-closed evaluation. To point a local console at it, put this in
-`frontend/.env.local`:
+Policy `covenant-v1` v1 caps transfers at 10,000 DEMO. The approved evidence
+origin is `covenant-sentinel.vercel.app`, which serves the fixtures in
+`frontend/public/evidence/`. The guarded balance is 24,900 DEMO after the
+allowed proposal executed.
+
+All four outcomes in the live queue were produced by consensus at finality:
+
+| Proposal | Outcome | Execution |
+| --- | --- | --- |
+| `live-audit-001` | `ALLOW` / `LOW` / `PURPOSE_ALIGNED` | `EXECUTED` / `SUCCEEDED` |
+| `live-bridge-001` | `BLOCK` / `CRITICAL` / `SECURITY_CRITICAL_EVIDENCE` | `NOT_QUEUED` |
+| `live-contested-001` | `TIMELOCK` / `HIGH` / `CONFLICTING_EVIDENCE` | `NOT_QUEUED` |
+| `live-offline-001` | `INSUFFICIENT_EVIDENCE` / `HIGH` / `EVIDENCE_UNAVAILABLE` | `NOT_QUEUED` |
+
+**The evidence fixtures state facts only.** They name no verdict, reason code,
+or rule ID — `scripts/check_evidence_fixtures.py` fails CI if one ever does. The
+verdicts above were derived by the evaluator and agreed by validators, not read
+out of the evidence.
+
+The allowed proposal's finality-safe child chain is observable end to end:
+
+```
+evaluate 0x5ebe23fd243a3d712b46ba8cce2f33620bdb5a06bda8be84b2768d99d3726c14
+  └─ vault execution 0x51a5ea386e25099f795da1163eb75fc1ec93f05902bed032e221412774394a63
+       └─ Sentinel callback 0x6a5101c5a55697e42755acdf40fbd2636be7a932d7553db24820ab150359ed1c
+```
+
+To point a local console at it, put this in `frontend/.env.local`:
 
 ```
 NEXT_PUBLIC_GENLAYER_RPC_URL=https://studio.genlayer.com/api
-NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS=0xdE348d4F02f8e8F4362A4146790541b18659809A
-NEXT_PUBLIC_COVENANT_VAULT_ADDRESS=0x71E2CD156cE4F447A324Fb7981b45ecbF0FF6870
+NEXT_PUBLIC_COVENANT_SENTINEL_ADDRESS=0x7CeA0E0D9E2a343C29fdDa253d3925c3Aba9b924
+NEXT_PUBLIC_COVENANT_VAULT_ADDRESS=0xEB10CF48D9EffA69b66d9013289F5206631E86e9
 ```
 
+To reproduce the whole thing from scratch on any network:
+
+```bash
+COVENANT_SEED_LIVE_DEMO=1 COVENANT_EVIDENCE_DOMAINS=covenant-sentinel.vercel.app genlayer deploy
+```
+
+Two limitations are visible rather than hidden. The live allowlist has one
+approved origin, and an emergency pause requires two independent ones, so the
+emergency path is exercised on localnet and in the integration suite instead.
 The current stable `genlayer-js` StudioNet profile does not expose the appeal,
-fee-manager, or rounds-storage contracts needed to quote and submit a safe
-appeal. The hosted console therefore does not claim that a StudioNet decision
-is appealable or render an Appeal button. Appeal support remains a protocol
-capability to exercise on a network/client profile that exposes the safe appeal
-charge path.
+fee-manager, or rounds-storage contracts needed to quote a safe appeal charge,
+so the console does not render an Appeal button or claim a StudioNet decision is
+appealable.
 
 ---
 
