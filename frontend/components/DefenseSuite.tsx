@@ -15,7 +15,7 @@ type Proof = {
   contracts: Record<string, { address: string; link: string; deployHash: string; deployLink: string }>;
   transactions: Tx[];
   final: {
-    amendment: { tighten: Amendment; loosen: Amendment };
+    amendment: { tighten: Amendment; loosen: Amendment; tighten2?: Amendment };
     upgrades: Record<string, Upgrade>;
   };
   state: { c8?: { spenderA?: Spender; spenderB?: Spender } } & Record<string, unknown>;
@@ -109,7 +109,7 @@ export function DefenseSuite() {
         <h2 id="amendments" className="display-title text-4xl">Policy amendment timeline</h2>
         <p className="mt-2 text-sm text-[#63655f]">The governor proposes a commit-pinned policy text. Validators compare it with the frozen Sentinel policy and quote the changed clause. Each verdict sets its own delay.</p>
         <ol className="mt-6 divide-y divide-black/12 border-y border-black/12">
-          {[{ name: "TIGHTEN attempt", a: tighten, live: live?.amendments?.[0] }, { name: "LOOSEN", a: loosen, live: live?.amendments?.[1] }].map(({ name, a, live: l }) => (
+          {[{ name: "TIGHTEN attempt 1 (lower cap)", a: tighten, live: live?.amendments?.[0] }, { name: "LOOSEN", a: loosen, live: live?.amendments?.[1] }, ...(proof.final.amendment.tighten2 ? [{ name: "TIGHTEN attempt 2 (new rule)", a: proof.final.amendment.tighten2, live: live?.amendments?.[2] }] : [])].map(({ name, a, live: l }) => (
             <li key={name} className="grid gap-3 py-6 sm:grid-cols-[12rem_1fr]">
               <div>
                 <p className="font-semibold">{name}</p>

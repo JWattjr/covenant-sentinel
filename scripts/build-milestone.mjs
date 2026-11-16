@@ -35,7 +35,8 @@ const milestone = {
     "Unreachable or mismatched evidence is VOID, never a verdict against a party.",
   ],
   results: {
-    amendment_tighten_attempt: { planned: "TIGHTENS", actual: amd.tighten.outcome.verdict, state: amd.tighten.state },
+    amendment_tighten_attempt_1: { planned: "TIGHTENS", actual: amd.tighten.outcome.verdict, state: amd.tighten.state },
+    amendment_tighten_attempt_2: { planned: "TIGHTENS", actual: amd.tighten2?.outcome.verdict ?? null, state: amd.tighten2?.state ?? null },
     amendment_loosen: { planned: "LOOSENS", actual: amd.loosen.outcome.verdict, state: amd.loosen.state },
     upgrade_advance: { planned: "ADVANCE", actual: up.advance.outcome.verdict, state: up.advance.state },
     upgrade_rollback_hidden_call: { planned: "ROLLBACK", actual: up.rollback.outcome.verdict, state: up.rollback.state },

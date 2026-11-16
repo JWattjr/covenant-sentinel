@@ -39,10 +39,15 @@
     "Unreachable or mismatched evidence is VOID, never a verdict against a party."
   ],
   "results": {
-    "amendment_tighten_attempt": {
+    "amendment_tighten_attempt_1": {
       "planned": "TIGHTENS",
       "actual": "NEUTRAL",
       "state": "ACTIVE"
+    },
+    "amendment_tighten_attempt_2": {
+      "planned": "TIGHTENS",
+      "actual": "TIGHTENS",
+      "state": "PENDING"
     },
     "amendment_loosen": {
       "planned": "LOOSENS",
@@ -250,6 +255,18 @@
       {
         "label": "activate-AMD-LOOSEN-01",
         "explorer": "https://explorer-studio.genlayer.com/tx/0x8be0d87509f5ebd88ef67a1901f83b137c6e40942163c7e2684eb89c85de0e79",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c9-propose-tighten2",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x802bfd8ffa7d32c5db9e9a607991c85f284392461f9d2dd585b01d2120079316",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c9-judge-tighten2",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x35ec216b46c4387587a394539bdfa19934952e82fdf4aff984978d0030ce14eb",
         "consensus": "FINALIZED",
         "execution": "SUCCESS"
       }
