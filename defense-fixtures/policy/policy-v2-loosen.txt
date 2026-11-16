@@ -1,0 +1,5 @@
+R1 â€” HARD_MAX_TRANSFER: No treasury transfer may exceed the published maximum.
+R2 â€” PURPOSE_ALIGNMENT: Spending must materially advance protocol development, security, infrastructure or approved community operations.
+R3 â€” SECURITY_EXCLUSION: A protocol with an unresolved critical exploit may be interacted with when the governor accepts the stated risk.
+R4 â€” CONFLICTING_EVIDENCE: Materially conflicting credible evidence forbids immediate execution.
+R5 â€” EMERGENCY_PAUSE: A temporary, bounded pause requires independently verifiable active-exploit evidence.

