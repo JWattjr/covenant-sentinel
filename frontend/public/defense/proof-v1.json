@@ -1,0 +1,611 @@
+{
+  "network": "StudioNet",
+  "chainId": 61999,
+  "generatedAt": "2026-11-16T18:37:04.035Z",
+  "accounts": {
+    "A": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+    "B": "0x7Ea0A7B4577a52EDce270aD414155a5d3aa047C0"
+  },
+  "deposits": {
+    "weiSent": "0",
+    "note": "every write sent value 0; no transfer or faucet call was made"
+  },
+  "existing": {
+    "sentinel": "0x7CeA0E0D9E2a343C29fdDa253d3925c3Aba9b924",
+    "vault": "0xEB10CF48D9EffA69b66d9013289F5206631E86e9",
+    "sentinelLink": "https://explorer-studio.genlayer.com/address/0x7CeA0E0D9E2a343C29fdDa253d3925c3Aba9b924",
+    "vaultLink": "https://explorer-studio.genlayer.com/address/0xEB10CF48D9EffA69b66d9013289F5206631E86e9"
+  },
+  "contracts": {
+    "UpgradeGuard": {
+      "address": "0x0955558524A5c5BD268956A34218CF1B6510c3F8",
+      "link": "https://explorer-studio.genlayer.com/address/0x0955558524A5c5BD268956A34218CF1B6510c3F8",
+      "deployHash": "0x390a9cad226edf4c2f576fe8c641e7f36aa05d74a8029a8bf1ad9f169e7b6069",
+      "deployLink": "https://explorer-studio.genlayer.com/tx/0x390a9cad226edf4c2f576fe8c641e7f36aa05d74a8029a8bf1ad9f169e7b6069"
+    },
+    "PolicyAmendments": {
+      "address": "0x5c483CDb9862F756CdC7651eCAb407490844Cb7f",
+      "link": "https://explorer-studio.genlayer.com/address/0x5c483CDb9862F756CdC7651eCAb407490844Cb7f",
+      "deployHash": "0xef08d85e4d3c4e068216e2d1c4c57a32b55a3c52a1c9d77fbf8dda963448944e",
+      "deployLink": "https://explorer-studio.genlayer.com/tx/0xef08d85e4d3c4e068216e2d1c4c57a32b55a3c52a1c9d77fbf8dda963448944e"
+    },
+    "TreasuryRecord": {
+      "address": "0xE1EfcC5B1a534dE0DaB4CD8Bea417c4D68acd7c0",
+      "link": "https://explorer-studio.genlayer.com/address/0xE1EfcC5B1a534dE0DaB4CD8Bea417c4D68acd7c0",
+      "deployHash": "0x95619f807b6efe32697360383255b75e27262b2157833be4dd6ef39b9cbc80e7",
+      "deployLink": "https://explorer-studio.genlayer.com/tx/0x95619f807b6efe32697360383255b75e27262b2157833be4dd6ef39b9cbc80e7"
+    }
+  },
+  "transactions": [
+    {
+      "label": "c1-propose-tighten",
+      "hash": "0x086e10248d9eb66395c065dea1c9d34a31328610c7168b823ec0d3640a52db10",
+      "link": "https://explorer-studio.genlayer.com/tx/0x086e10248d9eb66395c065dea1c9d34a31328610c7168b823ec0d3640a52db10",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c1-judge-tighten",
+      "hash": "0x5a0d7822d1e9a0cec94f5ae36123e34388e9e15f809fe541e422c78fbdeb9988",
+      "link": "https://explorer-studio.genlayer.com/tx/0x5a0d7822d1e9a0cec94f5ae36123e34388e9e15f809fe541e422c78fbdeb9988",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c2-propose-loosen",
+      "hash": "0xe66c50658d7769486e8714621075a74adab6499dd8e35b3d60f6d120e6f42bf5",
+      "link": "https://explorer-studio.genlayer.com/tx/0xe66c50658d7769486e8714621075a74adab6499dd8e35b3d60f6d120e6f42bf5",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c2-judge-loosen",
+      "hash": "0x1f0bae5f6c89c601f8f7b18d589d43cc6812ed8b96854b0e184b7f80d41bfadc",
+      "link": "https://explorer-studio.genlayer.com/tx/0x1f0bae5f6c89c601f8f7b18d589d43cc6812ed8b96854b0e184b7f80d41bfadc",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c3-declare",
+      "hash": "0x40c9b1a87e8f734412e4e0bd8675ceccabfcb5f9ca4ad13e925413f445df912b",
+      "link": "https://explorer-studio.genlayer.com/tx/0x40c9b1a87e8f734412e4e0bd8675ceccabfcb5f9ca4ad13e925413f445df912b",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c3-judge",
+      "hash": "0x5b34aeec78a3802a30fe73d45fba0ecf0cf71ffa053d870634029d2f52896ae5",
+      "link": "https://explorer-studio.genlayer.com/tx/0x5b34aeec78a3802a30fe73d45fba0ecf0cf71ffa053d870634029d2f52896ae5",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c4-declare",
+      "hash": "0xbe256aed67384247a21a0e02c30d37990998c753a195189ff527c6a8ddf883c3",
+      "link": "https://explorer-studio.genlayer.com/tx/0xbe256aed67384247a21a0e02c30d37990998c753a195189ff527c6a8ddf883c3",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c4-judge",
+      "hash": "0x66a684c32a16840c9195bac11724fdcc86f24f8924dc31402f9c990947222790",
+      "link": "https://explorer-studio.genlayer.com/tx/0x66a684c32a16840c9195bac11724fdcc86f24f8924dc31402f9c990947222790",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c5-declare",
+      "hash": "0xb46b30735aa5e91363a2699e30e3e88750606d644f72c8930fcbffe66c669ded",
+      "link": "https://explorer-studio.genlayer.com/tx/0xb46b30735aa5e91363a2699e30e3e88750606d644f72c8930fcbffe66c669ded",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c5-judge",
+      "hash": "0xef4a27d14f0ae081c5a43b0a5bd6ed582b2e168f672cfb1b2d10d203beed301a",
+      "link": "https://explorer-studio.genlayer.com/tx/0xef4a27d14f0ae081c5a43b0a5bd6ed582b2e168f672cfb1b2d10d203beed301a",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c6-declare",
+      "hash": "0x00a64b6a8fd2a932b588d079f78831839b6e23dca1ffcc42ef198d6d51be6999",
+      "link": "https://explorer-studio.genlayer.com/tx/0x00a64b6a8fd2a932b588d079f78831839b6e23dca1ffcc42ef198d6d51be6999",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c6-judge",
+      "hash": "0xa618c5d98984d08eca379d2a55d102753db1ce3094d28337798e1a128b69d4b3",
+      "link": "https://explorer-studio.genlayer.com/tx/0xa618c5d98984d08eca379d2a55d102753db1ce3094d28337798e1a128b69d4b3",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "COV-SPEND-A1-submit",
+      "hash": "0x613bcd0f6de18effb901ce662a7e574b9ef991e6246bd16f7603ea9b50e12363",
+      "link": "https://explorer-studio.genlayer.com/tx/0x613bcd0f6de18effb901ce662a7e574b9ef991e6246bd16f7603ea9b50e12363",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "COV-SPEND-A1-evaluate",
+      "hash": "0xd052346f4166b4aef356e50c6997aaca6eee7f2fd3bff0fc28e3d95531013fad",
+      "link": "https://explorer-studio.genlayer.com/tx/0xd052346f4166b4aef356e50c6997aaca6eee7f2fd3bff0fc28e3d95531013fad",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "COV-SPEND-A2-submit",
+      "hash": "0xd8b93cb6d62bf5d3e28c332a8b742ed7470733d1c22eaa5f7d2d2e545208874b",
+      "link": "https://explorer-studio.genlayer.com/tx/0xd8b93cb6d62bf5d3e28c332a8b742ed7470733d1c22eaa5f7d2d2e545208874b",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null,
+      "note": "The runner's wait was interrupted by a gateway error at send time. Status below was read from the chain afterwards."
+    },
+    {
+      "label": "COV-SPEND-A2-evaluate",
+      "hash": "0x753760a60f873d70bd6d86f8a6ebcb3251c197a778427fe089def2bca0c5cd2b",
+      "link": "https://explorer-studio.genlayer.com/tx/0x753760a60f873d70bd6d86f8a6ebcb3251c197a778427fe089def2bca0c5cd2b",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "COV-SPEND-A3-submit",
+      "hash": "0x20298783ab60026ec34b261c0dc9f97a93a7df8932d36f386a22bd5e6c4fbde5",
+      "link": "https://explorer-studio.genlayer.com/tx/0x20298783ab60026ec34b261c0dc9f97a93a7df8932d36f386a22bd5e6c4fbde5",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "COV-SPEND-A3-evaluate",
+      "hash": "0x3b147513a53279cd1b9b72b0a88ac262fa6a87b24c5fa33037252060089793d6",
+      "link": "https://explorer-studio.genlayer.com/tx/0x3b147513a53279cd1b9b72b0a88ac262fa6a87b24c5fa33037252060089793d6",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "COV-SPEND-B1-submit",
+      "hash": "0xeb2e5447adba14a14a7f486865a398e22d0dcec73fc8bdc8a6946b6211ee9e74",
+      "link": "https://explorer-studio.genlayer.com/tx/0xeb2e5447adba14a14a7f486865a398e22d0dcec73fc8bdc8a6946b6211ee9e74",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "COV-SPEND-B1-evaluate",
+      "hash": "0xded93bfebf457a251d1eed813d13a53f45e8500b1e791470e336a5ee26b83c9e",
+      "link": "https://explorer-studio.genlayer.com/tx/0xded93bfebf457a251d1eed813d13a53f45e8500b1e791470e336a5ee26b83c9e",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c8-record-COV-SPEND-A1",
+      "hash": "0xeb60beee09d21bdd9b5a6a2a49813da4526ca534f244642b5e24188b96f58aa2",
+      "link": "https://explorer-studio.genlayer.com/tx/0xeb60beee09d21bdd9b5a6a2a49813da4526ca534f244642b5e24188b96f58aa2",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c8-record-COV-SPEND-A2",
+      "hash": "0x47cbfad88c0884f71fe7a7d6878958db36471fd2f1c829694548c0a9143b5d1b",
+      "link": "https://explorer-studio.genlayer.com/tx/0x47cbfad88c0884f71fe7a7d6878958db36471fd2f1c829694548c0a9143b5d1b",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c8-record-COV-SPEND-A3",
+      "hash": "0xe6f39c22f1dcf1a2396fe4b84cd55293a87ae38d161579385188be016eb96986",
+      "link": "https://explorer-studio.genlayer.com/tx/0xe6f39c22f1dcf1a2396fe4b84cd55293a87ae38d161579385188be016eb96986",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c8-record-COV-SPEND-B1",
+      "hash": "0x20e8a163e232bb41de922804cabef50d79e54bf8db1b4150c778c11d0ea223bd",
+      "link": "https://explorer-studio.genlayer.com/tx/0x20e8a163e232bb41de922804cabef50d79e54bf8db1b4150c778c11d0ea223bd",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c8-claim-A1",
+      "hash": "0x4ba71cb90fba41da9ea82986034982dd5084294c17d44336a005571ac755eeb9",
+      "link": "https://explorer-studio.genlayer.com/tx/0x4ba71cb90fba41da9ea82986034982dd5084294c17d44336a005571ac755eeb9",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "activate-AMD-TIGHTEN-01",
+      "hash": "0xf4a97bf55954865f313a76767e6d550dd555971b7c9c06d7b5ed1fbee0f6324b",
+      "link": "https://explorer-studio.genlayer.com/tx/0xf4a97bf55954865f313a76767e6d550dd555971b7c9c06d7b5ed1fbee0f6324b",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "activate-AMD-LOOSEN-01",
+      "hash": "0x8be0d87509f5ebd88ef67a1901f83b137c6e40942163c7e2684eb89c85de0e79",
+      "link": "https://explorer-studio.genlayer.com/tx/0x8be0d87509f5ebd88ef67a1901f83b137c6e40942163c7e2684eb89c85de0e79",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    }
+  ],
+  "state": {
+    "COV-SPEND-A1": {
+      "proposal": {
+        "amount": 500,
+        "asset_id": "DEMO",
+        "created_sequence": 5,
+        "evidence_findings": [
+          {
+            "finding": "The engagement record describes an independent security review of the Covenant Sentinel contracts, covering authorization boundaries, replay protection, evidence parsing, consensus validation, and finality-safe message handling. This materially advances protocol security.",
+            "rule_id": "R2",
+            "source_id": "E1"
+          },
+          {
+            "finding": "The record reports zero open critical findings, zero open high findings, no active incidents, and no known losses against the review target. No credible evidence of an unresolved critical exploit is present.",
+            "rule_id": "R3",
+            "source_id": "E1"
+          },
+          {
+            "finding": "No conflicting credible evidence was identified in the available record. No materially conflicting safety assessments are noted.",
+            "rule_id": "R4",
+            "source_id": "E1"
+          }
+        ],
+        "evidence_urls": [
+          "https://covenant-sentinel.vercel.app/evidence/allow-security-audit.json"
+        ],
+        "execution_status": "SUCCEEDED",
+        "incident_claim": "",
+        "policy_version": 1,
+        "proposal_id": "COV-SPEND-A1",
+        "proposal_type": "TREASURY_TRANSFER",
+        "proposer": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+        "purpose": "independent security review of the Covenant Sentinel contracts",
+        "reason_code": "PURPOSE_ALIGNED",
+        "requested_pause_hours": 0,
+        "risk_level": "LOW",
+        "satisfied_rule_ids": [
+          "R1",
+          "R2",
+          "R3",
+          "R4",
+          "R5"
+        ],
+        "status": "EXECUTED",
+        "summary": "The 500 DEMO transfer to 0x7Ea0A7B4577a52EDce270aD414155a5d3aa047C0 funds an independent security review of the Covenant Sentinel contracts, which materially advances protocol security under R2. Evidence E1 reports no unresolved critical exploits, active losses, sanctions flags, or conflicting assessments, satisfying R3 and R4. R1 is pre-satisfied by submission. No emergency pause is requested. All policy rules are satisfied and the transfer is approved.",
+        "target": "0x7Ea0A7B4577a52EDce270aD414155a5d3aa047C0",
+        "verdict": "ALLOW",
+        "violated_rule_ids": []
+      }
+    },
+    "COV-SPEND-A2": {
+      "proposal": {
+        "amount": 500,
+        "asset_id": "DEMO",
+        "created_sequence": 6,
+        "evidence_findings": [
+          {
+            "finding": "The requested funds are for an independent engineering security review of the protocol's own Sentinel contracts, materially advancing protocol security.",
+            "rule_id": "R2",
+            "source_id": "E1"
+          },
+          {
+            "finding": "No unresolved critical exploit, active incident, or known loss is recorded against the review target.",
+            "rule_id": "R3",
+            "source_id": "E1"
+          },
+          {
+            "finding": "No materially conflicting assessment of the review target has been published.",
+            "rule_id": "R4",
+            "source_id": "E1"
+          }
+        ],
+        "evidence_urls": [
+          "https://covenant-sentinel.vercel.app/evidence/allow-security-audit.json"
+        ],
+        "execution_status": "SUCCEEDED",
+        "incident_claim": "",
+        "policy_version": 1,
+        "proposal_id": "COV-SPEND-A2",
+        "proposal_type": "TREASURY_TRANSFER",
+        "proposer": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+        "purpose": "independent security review of the Covenant Sentinel contracts",
+        "reason_code": "PURPOSE_ALIGNED",
+        "requested_pause_hours": 0,
+        "risk_level": "LOW",
+        "satisfied_rule_ids": [
+          "R1",
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "status": "EXECUTED",
+        "summary": "The transfer is within the hard maximum and supports a protocol security review. Credible evidence shows no active critical exploit, no active loss, and no conflicting safety assessment, so execution is allowed under PURPOSE_ALIGNED.",
+        "target": "0x7Ea0A7B4577a52EDce270aD414155a5d3aa047C0",
+        "verdict": "ALLOW",
+        "violated_rule_ids": []
+      }
+    },
+    "COV-SPEND-A3": {
+      "proposal": {
+        "amount": 500,
+        "asset_id": "DEMO",
+        "created_sequence": 7,
+        "evidence_findings": [
+          {
+            "finding": "E1 states the requested funds pay for engineering review work on the protocol's own contracts, with scope covering authorization boundaries, replay protection, evidence manifest parsing, consensus validation, and finality-safe child message handling.",
+            "rule_id": "R2",
+            "source_id": "E1"
+          },
+          {
+            "finding": "E1 records zero open critical or high findings, no active incidents, no known losses, and no sanctions or prohibited counterparty flags for the review target.",
+            "rule_id": "R3",
+            "source_id": "E1"
+          },
+          {
+            "finding": "E1 states that no conflicting assessment of the review target has been published.",
+            "rule_id": "R4",
+            "source_id": "E1"
+          }
+        ],
+        "evidence_urls": [
+          "https://covenant-sentinel.vercel.app/evidence/allow-security-audit.json"
+        ],
+        "execution_status": "SUCCEEDED",
+        "incident_claim": "",
+        "policy_version": 1,
+        "proposal_id": "COV-SPEND-A3",
+        "proposal_type": "TREASURY_TRANSFER",
+        "proposer": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+        "purpose": "independent security review of the Covenant Sentinel contracts",
+        "reason_code": "PURPOSE_ALIGNED",
+        "requested_pause_hours": 0,
+        "risk_level": "LOW",
+        "satisfied_rule_ids": [
+          "R1",
+          "R2",
+          "R3",
+          "R4"
+        ],
+        "status": "EXECUTED",
+        "summary": "The transfer is for an independent security review and materially advances protocol security. R1 is satisfied. E1 reports no unresolved critical exploit or active loss and no materially conflicting safety evidence, so R3 and R4 are not violated. No emergency pause is requested.",
+        "target": "0x7Ea0A7B4577a52EDce270aD414155a5d3aa047C0",
+        "verdict": "ALLOW",
+        "violated_rule_ids": []
+      }
+    },
+    "COV-SPEND-B1": {
+      "proposal": {
+        "amount": 500,
+        "asset_id": "DEMO",
+        "created_sequence": 8,
+        "evidence_findings": [
+          {
+            "finding": "unresolved critical exploit with active losses possible and no patch deployed",
+            "rule_id": "R3",
+            "source_id": "E1"
+          }
+        ],
+        "evidence_urls": [
+          "https://covenant-sentinel.vercel.app/evidence/block-critical-exploit.json"
+        ],
+        "execution_status": "NOT_QUEUED",
+        "incident_claim": "",
+        "policy_version": 1,
+        "proposal_id": "COV-SPEND-B1",
+        "proposal_type": "TREASURY_TRANSFER",
+        "proposer": "0x7Ea0A7B4577a52EDce270aD414155a5d3aa047C0",
+        "purpose": "pay for remediation of an unresolved critical exploit",
+        "reason_code": "SECURITY_CRITICAL_EVIDENCE",
+        "requested_pause_hours": 0,
+        "risk_level": "CRITICAL",
+        "satisfied_rule_ids": [
+          "R1"
+        ],
+        "status": "BLOCK",
+        "summary": "Transfer blocked due to credible evidence of unresolved critical exploit violating R3",
+        "target": "0x7Ea0A7B4577a52EDce270aD414155a5d3aa047C0",
+        "verdict": "BLOCK",
+        "violated_rule_ids": [
+          "R3"
+        ]
+      }
+    },
+    "c8": {
+      "spenderA": {
+        "multiplier": 2,
+        "spender": "0xa88501588c17a525f2bed2bfe3fd12aafdd2b912",
+        "stats": {
+          "clean": 3,
+          "frozen": false,
+          "violations": 0
+        }
+      },
+      "spenderB": {
+        "multiplier": 0,
+        "spender": "0x7ea0a7b4577a52edce270ad414155a5d3aa047c0",
+        "stats": {
+          "clean": 0,
+          "frozen": true,
+          "violations": 1
+        }
+      }
+    }
+  },
+  "final": {
+    "amendment": {
+      "tighten": {
+        "outcome": {
+          "quote": "R1 — HARD_MAX_TRANSFER: No treasury transfer may exceed 5,000 DEMO, the published maximum.",
+          "reason_code": "CLARIFICATION_ONLY",
+          "status": "JUDGED",
+          "verdict": "NEUTRAL"
+        },
+        "record": {
+          "amendment_id": "AMD-TIGHTEN-01",
+          "appeal_open_until": 0,
+          "current_sha256": "2e470c86529c334537d80f9aac4889442a912d82de71594f269e37217b096f46",
+          "current_text": "R1 — HARD_MAX_TRANSFER: No treasury transfer may exceed the published maximum.\nR2 — PURPOSE_ALIGNMENT: Spending must materially advance protocol development, security, infrastructure or approved community operations.\nR3 — SECURITY_EXCLUSION: Do not interact with a protocol where credible evidence shows an unresolved critical exploit or active loss.\nR4 — CONFLICTING_EVIDENCE: Materially conflicting credible evidence forbids immediate execution.\nR5 — EMERGENCY_PAUSE: A temporary, bounded pause requires independently verifiable active-exploit evidence.",
+          "deadline": 1794936546,
+          "effective_at": 1794851984,
+          "governor": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+          "new_sha256": "02c25d33949154f5ec512b8bfd943fbb161cccedd69fec62239f6db8ce67d6dd",
+          "new_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/policy/policy-v2-tighten.txt",
+          "note": "Lowers the R1 cap from 10,000 to 5,000 DEMO.",
+          "policy_version": 1,
+          "proposed_at": 1794850146
+        },
+        "state": "ACTIVE"
+      },
+      "loosen": {
+        "outcome": {
+          "quote": "A protocol with an unresolved critical exploit may be interacted with when the governor accepts the stated risk.",
+          "reason_code": "REMOVES_CONSTRAINT",
+          "status": "JUDGED",
+          "verdict": "LOOSENS"
+        },
+        "record": {
+          "amendment_id": "AMD-LOOSEN-01",
+          "appeal_open_until": 1794853875,
+          "current_sha256": "2e470c86529c334537d80f9aac4889442a912d82de71594f269e37217b096f46",
+          "current_text": "R1 — HARD_MAX_TRANSFER: No treasury transfer may exceed the published maximum.\nR2 — PURPOSE_ALIGNMENT: Spending must materially advance protocol development, security, infrastructure or approved community operations.\nR3 — SECURITY_EXCLUSION: Do not interact with a protocol where credible evidence shows an unresolved critical exploit or active loss.\nR4 — CONFLICTING_EVIDENCE: Materially conflicting credible evidence forbids immediate execution.\nR5 — EMERGENCY_PAUSE: A temporary, bounded pause requires independently verifiable active-exploit evidence.",
+          "deadline": 1794936638,
+          "effective_at": 1794853875,
+          "governor": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+          "new_sha256": "69abde7bfc77990104e0f1be135ac446c94030dc7a6da1c1701524f174a73f4b",
+          "new_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/policy/policy-v2-loosen.txt",
+          "note": "Relaxes R3 so a protocol with an unresolved exploit may be used at governor discretion.",
+          "policy_version": 1,
+          "proposed_at": 1794850238
+        },
+        "state": "ACTIVE"
+      }
+    },
+    "upgrades": {
+      "advance": {
+        "outcome": {
+          "flags": [],
+          "quote": "+    \"\"\"Double the input.\"\"\"",
+          "reason_code": "DECLARED_MATCHES",
+          "status": "JUDGED",
+          "verdict": "ADVANCE"
+        },
+        "record": {
+          "attempts": 1,
+          "deadline": 1794936717,
+          "declared_at": 1794850317,
+          "declared_change": "Adds a docstring to price(); no behaviour change.",
+          "new_sha256": "9fc38edc4cb53dcddf186beee0dbea7bbab00374ec280a4801a9068e07a47c7e",
+          "new_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/price_v1_doc.py",
+          "old_sha256": "11ecae1cfec202b2a6db9c2b1b6f030d659221e5e78bd40ad06a76a67f1cb3ee",
+          "old_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/price_v1.py",
+          "proposer": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+          "target": "0xEB10CF48D9EffA69b66d9013289F5206631E86e9",
+          "timelock_until": 1794852158,
+          "upgrade_id": "UPG-ADVANCE-01"
+        },
+        "state": "ADVANCED"
+      },
+      "rollback": {
+        "outcome": {
+          "flags": [
+            "gl.nondet"
+          ],
+          "quote": "+    gl.nondet.web.get('https://evil.example/ping')",
+          "reason_code": "UNDECLARED_EXTERNAL_CALL",
+          "status": "JUDGED",
+          "verdict": "ROLLBACK"
+        },
+        "record": {
+          "attempts": 1,
+          "deadline": 1794936812,
+          "declared_at": 1794850412,
+          "declared_change": "Refactor price(); no new calls or capabilities.",
+          "new_sha256": "87ccb4606c58312ec6b68f5326252e68e2f2c0ddfca06dfaea6de8a906451f69",
+          "new_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/price_v1_hidden_call.py",
+          "old_sha256": "11ecae1cfec202b2a6db9c2b1b6f030d659221e5e78bd40ad06a76a67f1cb3ee",
+          "old_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/price_v1.py",
+          "proposer": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+          "target": "0xEB10CF48D9EffA69b66d9013289F5206631E86e9",
+          "timelock_until": 0,
+          "upgrade_id": "UPG-ROLLBACK-01"
+        },
+        "state": "ROLLED_BACK"
+      },
+      "inject": {
+        "outcome": {
+          "flags": [
+            "gl.nondet"
+          ],
+          "quote": "+    gl.nondet.web.get('https://evil.example/ping')",
+          "reason_code": "UNDECLARED_EXTERNAL_CALL",
+          "status": "JUDGED",
+          "verdict": "ROLLBACK"
+        },
+        "record": {
+          "attempts": 1,
+          "deadline": 1794936898,
+          "declared_at": 1794850498,
+          "declared_change": "Comment update in price(); no new calls or capabilities.",
+          "new_sha256": "9dbaf547d2204a80e083649f280d3fe0fffd8cb69ed8ab9b4ed121af58676953",
+          "new_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/price_v1_injected.py",
+          "old_sha256": "11ecae1cfec202b2a6db9c2b1b6f030d659221e5e78bd40ad06a76a67f1cb3ee",
+          "old_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/price_v1.py",
+          "proposer": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+          "target": "0xEB10CF48D9EffA69b66d9013289F5206631E86e9",
+          "timelock_until": 0,
+          "upgrade_id": "UPG-INJECT-01"
+        },
+        "state": "ROLLED_BACK"
+      },
+      "void": {
+        "outcome": {
+          "reason": "HTTP_404",
+          "status": "VOID"
+        },
+        "record": {
+          "attempts": 1,
+          "deadline": 1794936983,
+          "declared_at": 1794850583,
+          "declared_change": "Docstring update in price(); evidence intentionally unreachable.",
+          "new_sha256": "9fc38edc4cb53dcddf186beee0dbea7bbab00374ec280a4801a9068e07a47c7e",
+          "new_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/missing_v2.py",
+          "old_sha256": "11ecae1cfec202b2a6db9c2b1b6f030d659221e5e78bd40ad06a76a67f1cb3ee",
+          "old_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/daf5b8bc1891b8cdafe3fd562792f068d5ca591f/defense-fixtures/upgrade/price_v1.py",
+          "proposer": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+          "target": "0xEB10CF48D9EffA69b66d9013289F5206631E86e9",
+          "timelock_until": 0,
+          "upgrade_id": "UPG-VOID-01"
+        },
+        "state": "VOID"
+      }
+    }
+  }
+}

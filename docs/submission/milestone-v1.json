@@ -1,0 +1,277 @@
+{
+  "title": "Covenant Sentinel defense suite",
+  "summary": "Three contracts that check the rules around a policy-bound treasury: validator-judged upgrade reviews, policy amendment comparisons, and a per-spender record written only from finalized results. Live on StudioNet with eight recorded cases, including real deviations.",
+  "network": "GenLayer StudioNet (chain 61999)",
+  "contracts": [
+    {
+      "name": "UpgradeGuard",
+      "address": "0x0955558524A5c5BD268956A34218CF1B6510c3F8",
+      "explorer": "https://explorer-studio.genlayer.com/address/0x0955558524A5c5BD268956A34218CF1B6510c3F8",
+      "role": "Validators judge ADVANCE, HOLD or ROLLBACK from a commit-pinned source diff, with one quoted line."
+    },
+    {
+      "name": "PolicyAmendments",
+      "address": "0x5c483CDb9862F756CdC7651eCAb407490844Cb7f",
+      "explorer": "https://explorer-studio.genlayer.com/address/0x5c483CDb9862F756CdC7651eCAb407490844Cb7f",
+      "role": "Validators judge LOOSENS, TIGHTENS or NEUTRAL against the frozen Sentinel policy, with one quoted clause."
+    },
+    {
+      "name": "TreasuryRecord",
+      "address": "0xE1EfcC5B1a534dE0DaB4CD8Bea417c4D68acd7c0",
+      "explorer": "https://explorer-studio.genlayer.com/address/0xE1EfcC5B1a534dE0DaB4CD8Bea417c4D68acd7c0",
+      "role": "No model. Per-spender record and pull-based claims, written only from committed Sentinel results."
+    }
+  ],
+  "existing_contracts_unchanged": [
+    {
+      "name": "CovenantSentinel",
+      "explorer": "https://explorer-studio.genlayer.com/address/0x7CeA0E0D9E2a343C29fdDa253d3925c3Aba9b924"
+    },
+    {
+      "name": "SentinelVault",
+      "explorer": "https://explorer-studio.genlayer.com/address/0xEB10CF48D9EffA69b66d9013289F5206631E86e9"
+    }
+  ],
+  "judgment_points": [
+    "Upgrade review: ADVANCE, HOLD or ROLLBACK, quote must be a line of the diff.",
+    "Policy amendment: LOOSENS, TIGHTENS or NEUTRAL, quote must be a clause from either policy text.",
+    "Validators agree on the evidence: the leader's quote must appear in each validator's own fetch.",
+    "Unreachable or mismatched evidence is VOID, never a verdict against a party."
+  ],
+  "results": {
+    "amendment_tighten_attempt": {
+      "planned": "TIGHTENS",
+      "actual": "NEUTRAL",
+      "state": "ACTIVE"
+    },
+    "amendment_loosen": {
+      "planned": "LOOSENS",
+      "actual": "LOOSENS",
+      "state": "ACTIVE"
+    },
+    "upgrade_advance": {
+      "planned": "ADVANCE",
+      "actual": "ADVANCE",
+      "state": "ADVANCED"
+    },
+    "upgrade_rollback_hidden_call": {
+      "planned": "ROLLBACK",
+      "actual": "ROLLBACK",
+      "state": "ROLLED_BACK"
+    },
+    "upgrade_injection": {
+      "planned": "ROLLBACK",
+      "actual": "ROLLBACK",
+      "state": "ROLLED_BACK"
+    },
+    "upgrade_unreachable": {
+      "planned": "VOID",
+      "actual": "VOID",
+      "state": "VOID"
+    },
+    "spender_a": {
+      "multiplier": 2,
+      "spender": "0xa88501588c17a525f2bed2bfe3fd12aafdd2b912",
+      "stats": {
+        "clean": 3,
+        "frozen": false,
+        "violations": 0
+      }
+    },
+    "spender_b": {
+      "multiplier": 0,
+      "spender": "0x7ea0a7b4577a52edce270ad414155a5d3aa047c0",
+      "stats": {
+        "clean": 0,
+        "frozen": true,
+        "violations": 1
+      }
+    }
+  },
+  "proof_links": {
+    "recorded_proof": "deploy/proof-v1.json",
+    "transactions": [
+      {
+        "label": "c1-propose-tighten",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x086e10248d9eb66395c065dea1c9d34a31328610c7168b823ec0d3640a52db10",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c1-judge-tighten",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x5a0d7822d1e9a0cec94f5ae36123e34388e9e15f809fe541e422c78fbdeb9988",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c2-propose-loosen",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xe66c50658d7769486e8714621075a74adab6499dd8e35b3d60f6d120e6f42bf5",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c2-judge-loosen",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x1f0bae5f6c89c601f8f7b18d589d43cc6812ed8b96854b0e184b7f80d41bfadc",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c3-declare",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x40c9b1a87e8f734412e4e0bd8675ceccabfcb5f9ca4ad13e925413f445df912b",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c3-judge",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x5b34aeec78a3802a30fe73d45fba0ecf0cf71ffa053d870634029d2f52896ae5",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c4-declare",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xbe256aed67384247a21a0e02c30d37990998c753a195189ff527c6a8ddf883c3",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c4-judge",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x66a684c32a16840c9195bac11724fdcc86f24f8924dc31402f9c990947222790",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c5-declare",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xb46b30735aa5e91363a2699e30e3e88750606d644f72c8930fcbffe66c669ded",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c5-judge",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xef4a27d14f0ae081c5a43b0a5bd6ed582b2e168f672cfb1b2d10d203beed301a",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c6-declare",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x00a64b6a8fd2a932b588d079f78831839b6e23dca1ffcc42ef198d6d51be6999",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c6-judge",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xa618c5d98984d08eca379d2a55d102753db1ce3094d28337798e1a128b69d4b3",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-A1-submit",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x613bcd0f6de18effb901ce662a7e574b9ef991e6246bd16f7603ea9b50e12363",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-A1-evaluate",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xd052346f4166b4aef356e50c6997aaca6eee7f2fd3bff0fc28e3d95531013fad",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-A2-submit",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xd8b93cb6d62bf5d3e28c332a8b742ed7470733d1c22eaa5f7d2d2e545208874b",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-A2-evaluate",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x753760a60f873d70bd6d86f8a6ebcb3251c197a778427fe089def2bca0c5cd2b",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-A3-submit",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x20298783ab60026ec34b261c0dc9f97a93a7df8932d36f386a22bd5e6c4fbde5",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-A3-evaluate",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x3b147513a53279cd1b9b72b0a88ac262fa6a87b24c5fa33037252060089793d6",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-B1-submit",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xeb2e5447adba14a14a7f486865a398e22d0dcec73fc8bdc8a6946b6211ee9e74",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-B1-evaluate",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xded93bfebf457a251d1eed813d13a53f45e8500b1e791470e336a5ee26b83c9e",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c8-record-COV-SPEND-A1",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xeb60beee09d21bdd9b5a6a2a49813da4526ca534f244642b5e24188b96f58aa2",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c8-record-COV-SPEND-A2",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x47cbfad88c0884f71fe7a7d6878958db36471fd2f1c829694548c0a9143b5d1b",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c8-record-COV-SPEND-A3",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xe6f39c22f1dcf1a2396fe4b84cd55293a87ae38d161579385188be016eb96986",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c8-record-COV-SPEND-B1",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x20e8a163e232bb41de922804cabef50d79e54bf8db1b4150c778c11d0ea223bd",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c8-claim-A1",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x4ba71cb90fba41da9ea82986034982dd5084294c17d44336a005571ac755eeb9",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "activate-AMD-TIGHTEN-01",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xf4a97bf55954865f313a76767e6d550dd555971b7c9c06d7b5ed1fbee0f6324b",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "activate-AMD-LOOSEN-01",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x8be0d87509f5ebd88ef67a1901f83b137c6e40942163c7e2684eb89c85de0e79",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      }
+    ],
+    "key": {
+      "amendment_judge_loosen": "https://explorer-studio.genlayer.com/tx/0x1f0bae5f6c89c601f8f7b18d589d43cc6812ed8b96854b0e184b7f80d41bfadc",
+      "upgrade_judge_rollback": "https://explorer-studio.genlayer.com/tx/0x66a684c32a16840c9195bac11724fdcc86f24f8924dc31402f9c990947222790",
+      "treasury_claim": "https://explorer-studio.genlayer.com/tx/0x4ba71cb90fba41da9ea82986034982dd5084294c17d44336a005571ac755eeb9"
+    }
+  },
+  "how_to_verify": [
+    "npm run verify:proof-v1 (read-only; checks every explorer link through the explorer API)",
+    "Open /defense in the console: recorded proof and live reads are shown separately"
+  ],
+  "honest_limits": [
+    "The Sentinel's policy was not changed: publishing a new policy needs the governor key, which was not available.",
+    "Payout is DEMO vault accounting, not a native token transfer.",
+    "StudioNet exposes no appeal, so the LOOSENS appeal window is displayed only.",
+    "Direct tests cover one contract at a time; treasury cross-contract reads and clock-based transitions are proven live."
+  ],
+  "deposits": {
+    "weiSent": "0",
+    "note": "every write sent value 0; no transfer or faucet call was made"
+  }
+}

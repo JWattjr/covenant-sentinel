@@ -249,6 +249,18 @@ CLI and JS SDK. There is no raw EVM JSON-RPC path anywhere in this repository.
 
 ---
 
+## Defense suite
+
+Three further contracts check the rules themselves, not only individual spends:
+
+* `contracts/upgrade_guard.py`: a validator-judged upgrade review over commit-pinned old and new source. The model returns ADVANCE, HOLD or ROLLBACK with one quoted diff line. A deterministic scanner can override an ADVANCE that adds an undeclared call.
+* `contracts/policy_amendments.py`: a validator-judged comparison of a proposed policy with the frozen current policy. LOOSENS takes effect after 60 minutes, TIGHTENS and NEUTRAL after 30.
+* `contracts/treasury_record.py`: a per-spender record with no model, written only from committed Sentinel results. Three clean actions raise the allowance to 2x, and any BLOCK freezes the spender.
+
+Live deployment, cases and receipts: `deploy/proof-v1.json`. Verify it read-only with `npm run verify:proof-v1`. The console at `/defense` shows the recorded proof and live reads separately. The design, its limits and the walkthrough are in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/TUTORIAL-DEFENSE.md`](docs/TUTORIAL-DEFENSE.md) and [`docs/DEMO.md`](docs/DEMO.md).
+
+Honest limits: the existing Sentinel's policy is not changed by the amendment contract, because publishing it needs the governor's key. The treasury payout is DEMO vault accounting. StudioNet exposes no appeal, so the LOOSENS appeal window is displayed only.
+
 ## Documentation
 
 | Document | Contents |

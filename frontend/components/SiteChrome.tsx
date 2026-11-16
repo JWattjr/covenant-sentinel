@@ -8,6 +8,7 @@ const routes = [
   ["Explorer", "/explorer"],
   ["Submit", "/submit"],
   ["Operate", "/operate"],
+  ["Defense", "/defense"],
 ] as const;
 
 export function SiteHeader({ current }: { current: (typeof routes)[number][0] }) {

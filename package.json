@@ -10,7 +10,9 @@
     "build": "npm run build --workspace frontend",
     "start": "npm run start --workspace frontend",
     "lint": "npm run lint --workspace frontend",
-    "deploy": "genlayer deploy"
+    "deploy": "genlayer deploy",
+    "run:case": "node --env-file-if-exists=.env scripts/run-case.mjs",
+    "verify:proof-v1": "node scripts/verify-proof-v1.mjs"
   },
   "devDependencies": {
     "genlayer-js": "^1.1.8"
