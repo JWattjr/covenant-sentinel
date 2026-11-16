@@ -1,0 +1,6 @@
+R1 — HARD_MAX_TRANSFER: No treasury transfer may exceed the published maximum.
+R2 — PURPOSE_ALIGNMENT: Spending must materially advance protocol development, security, infrastructure or approved community operations.
+R3 — SECURITY_EXCLUSION: Do not interact with a protocol where credible evidence shows an unresolved critical exploit or active loss.
+R4 — CONFLICTING_EVIDENCE: Materially conflicting credible evidence forbids immediate execution.
+R5 — EMERGENCY_PAUSE: A temporary, bounded pause requires independently verifiable active-exploit evidence.
+R6 — RECIPIENT_EXCLUSION: No treasury transfer may be sent to a recipient whose previous request was blocked. Any such request must be refused.
