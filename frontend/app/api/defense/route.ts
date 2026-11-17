@@ -32,7 +32,7 @@ export async function GET(request: Request) {
       spenders: [] as unknown[],
     };
     // Sequential on purpose: the public RPC rejects bursts.
-    for (const id of ["AMD-TIGHTEN-01", "AMD-LOOSEN-01", "AMD-TIGHTEN-02"]) out.amendments.push(await read(amendments, "get_amendment", [id]));
+    for (const id of ["AMD-TIGHTEN-01", "AMD-LOOSEN-01", "AMD-TIGHTEN-02", "AMD-TIGHTEN-03"]) out.amendments.push(await read(amendments, "get_amendment", [id]));
     for (const id of ["UPG-ADVANCE-01", "UPG-ROLLBACK-01", "UPG-INJECT-01", "UPG-VOID-01"]) out.upgrades.push(await read(upgrades, "get_upgrade", [id]));
     for (const who of spenders) out.spenders.push(await read(treasury, "get_spender", [who]));
     return new NextResponse(JSON.stringify(out, bigintSafe), { headers: { "content-type": "application/json" } });

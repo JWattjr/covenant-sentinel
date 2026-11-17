@@ -41,6 +41,8 @@ const milestone = {
   results: {
     amendment_tighten_attempt_1: { planned: "TIGHTENS", actual: amd.tighten.outcome.verdict, state: amd.tighten.state },
     amendment_tighten_attempt_2: { planned: "TIGHTENS", actual: amd.tighten2?.outcome.verdict ?? null, state: amd.tighten2?.state ?? null },
+    amendment_tighten_attempt_3_published: { planned: "TIGHTENS", actual: amd.tighten3?.outcome.verdict ?? null, state: amd.tighten3?.state ?? null },
+    governor_step: proof.governorStep ?? null,
     amendment_loosen: { planned: "LOOSENS", actual: amd.loosen.outcome.verdict, state: amd.loosen.state },
     upgrade_advance: { planned: "ADVANCE", actual: up.advance.outcome.verdict, state: up.advance.state },
     upgrade_rollback_hidden_call: { planned: "ROLLBACK", actual: up.rollback.outcome.verdict, state: up.rollback.state },
@@ -63,7 +65,8 @@ const milestone = {
     "Open /defense in the console: recorded proof and live reads are shown separately",
   ],
   honest_limits: [
-    "The Sentinel's policy was not changed: publishing a new policy needs the governor key, which was not available.",
+    "Only the R1 cap is enforced deterministically by the existing Sentinel. The R6 rule from attempt 2 cannot be enforced, because the Sentinel's evaluator accepts rule IDs R1 to R5.",
+    "Policy v2 (5,000 DEMO cap) is now live on the public demo. New submissions are evaluated under it; earlier proposals stay bound to v1.",
     "The DEMO credit happens in the existing vault. The treasury claim only records a receipt after verifying that credit; it moves no funds.",
     "Amendment attempt 1 proposed \"5,000 DEMO, the published maximum\", which conflicts with the Sentinel's 10,000 cap, so its NEUTRAL verdict reflects ambiguous wording. Attempt 2 adds a new rule and was judged TIGHTENS.",
     "StudioNet exposes no appeal, so the LOOSENS appeal window is displayed only.",

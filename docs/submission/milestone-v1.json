@@ -53,6 +53,27 @@
       "actual": "TIGHTENS",
       "state": "ACTIVE"
     },
+    "amendment_tighten_attempt_3_published": {
+      "planned": "TIGHTENS",
+      "actual": "TIGHTENS",
+      "state": "ACTIVE"
+    },
+    "governor_step": {
+      "amendment": "AMD-TIGHTEN-03",
+      "sentinelPolicyVersion": 2,
+      "policyV2": {
+        "max_transfer_amount": 5000,
+        "canonical_id": "covenant-v2",
+        "sha256": "cc413e7d65284526576890800721d4e347e3dfcaf4443b759f19e4510a8b3e2d"
+      },
+      "spend": {
+        "id": "COV-SPEND-G1",
+        "amount": 7000,
+        "outcome": "REFUSED_AT_SUBMIT",
+        "reason": "transfer exceeds HARD_MAX_TRANSFER (policy v2 cap 5,000)"
+      },
+      "signedBy": "Sentinel governor, run by the owner in their own terminal (password never shared)"
+    },
     "amendment_loosen": {
       "planned": "LOOSENS",
       "actual": "LOOSENS",
@@ -279,6 +300,42 @@
         "explorer": "https://explorer-studio.genlayer.com/tx/0x5333c20d7513ffcc087eee4cc1d62d4832d730fa73dcc5f068c914e95ad758e8",
         "consensus": "FINALIZED",
         "execution": "SUCCESS"
+      },
+      {
+        "label": "c10-propose-tighten3",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x2ff33a7474969fd9586221f4f892d442c5d5aaf71ebddf238056355da52c1da6",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c10-judge-tighten3",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x8b4fe1e341acc12b1f55d466cd9ca3cd42df871912dd1f3969dbee1ee05e7604",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "c10-activate-tighten3",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x483c96156ce347fb32f5bd82319006b0e4f8981bac3ff12750c90e15cbbcb6a9",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "g-publish-policy-v2",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x287ce5bc5d39668ce165ce7c42dfd53ed5689da76e50c5cec894650e7dc954cb",
+        "consensus": "FINALIZED",
+        "execution": "SUCCESS"
+      },
+      {
+        "label": "COV-SPEND-G1-submit",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0x1fbe04f91733338ef477e472b2686dea12e071664c86bbde01674fd289bcba0d",
+        "consensus": "FINALIZED",
+        "execution": "FINISHED_WITH_ERROR"
+      },
+      {
+        "label": "COV-SPEND-G1-evaluate",
+        "explorer": "https://explorer-studio.genlayer.com/tx/0xb4a158094db3130ba4faff6794961b3af39e1b08cb453b99303422d788e72e2d",
+        "consensus": "FINALIZED",
+        "execution": "FINISHED_WITH_ERROR"
       }
     ],
     "key": {
@@ -292,7 +349,8 @@
     "Open /defense in the console: recorded proof and live reads are shown separately"
   ],
   "honest_limits": [
-    "The Sentinel's policy was not changed: publishing a new policy needs the governor key, which was not available.",
+    "Only the R1 cap is enforced deterministically by the existing Sentinel. The R6 rule from attempt 2 cannot be enforced, because the Sentinel's evaluator accepts rule IDs R1 to R5.",
+    "Policy v2 (5,000 DEMO cap) is now live on the public demo. New submissions are evaluated under it; earlier proposals stay bound to v1.",
     "The DEMO credit happens in the existing vault. The treasury claim only records a receipt after verifying that credit; it moves no funds.",
     "Amendment attempt 1 proposed \"5,000 DEMO, the published maximum\", which conflicts with the Sentinel's 10,000 cap, so its NEUTRAL verdict reflects ambiguous wording. Attempt 2 adds a new rule and was judged TIGHTENS.",
     "StudioNet exposes no appeal, so the LOOSENS appeal window is displayed only.",

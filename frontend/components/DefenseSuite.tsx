@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 //  - RECORDED: /defense/proof-v1.json, written by scripts/run-case.mjs at the end of the live run.
 //  - LIVE: read-only calls to StudioNet made now. No wallet is needed for either.
 
-type Tx = { label: string; hash: string; link: string; consensus: string | null; execution: string | null; error: string | null };
+type Tx = { label: string; hash: string; link: string; consensus: string | null; execution: string | null; error: string | null; note?: string };
 type Proof = {
   network: string;
   chainId: number;
@@ -15,10 +15,16 @@ type Proof = {
   contracts: Record<string, { address: string; link: string; deployHash: string; deployLink: string }>;
   transactions: Tx[];
   final: {
-    amendment: { tighten: Amendment; loosen: Amendment; tighten2?: Amendment };
+    amendment: { tighten: Amendment; loosen: Amendment; tighten2?: Amendment; tighten3?: Amendment };
     upgrades: Record<string, Upgrade>;
   };
   state: { c8?: { spenderA?: Spender; spenderB?: Spender } } & Record<string, unknown>;
+  governorStep?: {
+    amendment: string;
+    sentinelPolicyVersion: number;
+    policyV2: { max_transfer_amount: number; canonical_id: string; sha256: string };
+    spend: { id: string; amount: number; outcome: string; reason: string };
+  };
 };
 type Amendment = {
   record: { amendment_id: string; new_url: string; effective_at: number; appeal_open_until: number };
@@ -48,6 +54,7 @@ function Pill({ tone, children }: { tone: "proof" | "live" | "bad" | "ok"; child
 function txState(tx: Tx) {
   if (tx.error) return { label: "Not finalized", tone: "bad" as const };
   if (tx.consensus === "FINALIZED" && (tx.execution === "SUCCESS" || tx.execution === "FINISHED_WITH_RETURN")) return { label: "Finalized, returned", tone: "ok" as const };
+  if (tx.consensus === "FINALIZED" && tx.note) return { label: "Finalized, refused by contract (expected)", tone: "proof" as const };
   if (tx.consensus === "FINALIZED") return { label: `Finalized, execution ${tx.execution ?? "unknown"}`, tone: "bad" as const };
   return { label: `Consensus ${tx.consensus ?? "unknown"}`, tone: "bad" as const };
 }
@@ -109,7 +116,7 @@ export function DefenseSuite() {
         <h2 id="amendments" className="display-title text-4xl">Policy amendment timeline</h2>
         <p className="mt-2 text-sm text-[#63655f]">The governor proposes a commit-pinned policy text. Validators compare it with the frozen Sentinel policy and quote the changed clause. Each verdict sets its own delay.</p>
         <ol className="mt-6 divide-y divide-black/12 border-y border-black/12">
-          {[{ name: "TIGHTEN attempt 1 (lower cap)", a: tighten, live: live?.amendments?.[0] }, { name: "LOOSEN", a: loosen, live: live?.amendments?.[1] }, ...(proof.final.amendment.tighten2 ? [{ name: "TIGHTEN attempt 2 (new rule)", a: proof.final.amendment.tighten2, live: live?.amendments?.[2] }] : [])].map(({ name, a, live: l }) => (
+          {[{ name: "TIGHTEN attempt 1 (lower cap)", a: tighten, live: live?.amendments?.[0] }, { name: "LOOSEN", a: loosen, live: live?.amendments?.[1] }, ...(proof.final.amendment.tighten2 ? [{ name: "TIGHTEN attempt 2 (new rule)", a: proof.final.amendment.tighten2, live: live?.amendments?.[2] }] : []), ...(proof.final.amendment.tighten3 ? [{ name: "TIGHTEN attempt 3 (explicit cap) → published", a: proof.final.amendment.tighten3, live: live?.amendments?.[3] }] : [])].map(({ name, a, live: l }) => (
             <li key={name} className="grid gap-3 py-6 sm:grid-cols-[12rem_1fr]">
               <div>
                 <p className="font-semibold">{name}</p>
@@ -136,6 +143,18 @@ export function DefenseSuite() {
           ))}
         </ol>
       </section>
+
+      {proof.governorStep ? (
+        <section aria-labelledby="governor" className="rounded-2xl border border-[#315fe8]/30 bg-[#eef1ff] p-6">
+          <h2 id="governor" className="display-title text-4xl">From verdict to enforcement</h2>
+          <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-[#303238]">
+            <li>Validators judged amendment <span className="font-mono">{proof.governorStep.amendment}</span> TIGHTENS: the R1 cap falls from 10,000 to 5,000 DEMO.</li>
+            <li>After its delay it became ACTIVE, and the Sentinel&apos;s governor published that exact text as policy v{proof.governorStep.sentinelPolicyVersion} (cap {proof.governorStep.policyV2.max_transfer_amount.toLocaleString()} DEMO, text hash <span className="font-mono">{proof.governorStep.policyV2.sha256.slice(0, 12)}…</span>).</li>
+            <li>A {proof.governorStep.spend.amount.toLocaleString()} DEMO spend (<span className="font-mono">{proof.governorStep.spend.id}</span>) was then refused at submit: {proof.governorStep.spend.reason}. Under policy v1 it would have passed this check.</li>
+          </ol>
+          <p className="mt-3 text-xs text-[#63655f]">Only the R1 cap is enforced deterministically by the existing Sentinel. Its evaluator accepts rule IDs R1 to R5, so the new rule R6 from attempt 2 cannot be enforced without changing the Sentinel.</p>
+        </section>
+      ) : null}
 
       <section aria-labelledby="upgrades">
         <h2 id="upgrades" className="display-title text-4xl">Upgrade review</h2>
@@ -197,7 +216,7 @@ export function DefenseSuite() {
             const s = txState(tx);
             return (
               <li key={tx.hash} className="grid gap-2 py-3 sm:grid-cols-[14rem_1fr_auto] sm:items-center">
-                <span className="font-mono text-xs">{tx.label}</span>
+                <span className="font-mono text-xs">{tx.label}{tx.note ? <span className="mt-1 block font-sans text-[11px] leading-4 text-[#63655f]">{tx.note}</span> : null}</span>
                 <a className="truncate font-mono text-xs text-[#2c4fc7] underline" href={tx.link} target="_blank" rel="noreferrer">{tx.hash}</a>
                 <Pill tone={s.tone}>{s.label}</Pill>
               </li>

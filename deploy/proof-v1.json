@@ -277,6 +277,57 @@
       "consensus": "FINALIZED",
       "execution": "SUCCESS",
       "error": null
+    },
+    {
+      "label": "c10-propose-tighten3",
+      "hash": "0x2ff33a7474969fd9586221f4f892d442c5d5aaf71ebddf238056355da52c1da6",
+      "link": "https://explorer-studio.genlayer.com/tx/0x2ff33a7474969fd9586221f4f892d442c5d5aaf71ebddf238056355da52c1da6",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c10-judge-tighten3",
+      "hash": "0x8b4fe1e341acc12b1f55d466cd9ca3cd42df871912dd1f3969dbee1ee05e7604",
+      "link": "https://explorer-studio.genlayer.com/tx/0x8b4fe1e341acc12b1f55d466cd9ca3cd42df871912dd1f3969dbee1ee05e7604",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "c10-activate-tighten3",
+      "hash": "0x483c96156ce347fb32f5bd82319006b0e4f8981bac3ff12750c90e15cbbcb6a9",
+      "link": "https://explorer-studio.genlayer.com/tx/0x483c96156ce347fb32f5bd82319006b0e4f8981bac3ff12750c90e15cbbcb6a9",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
+    },
+    {
+      "label": "g-publish-policy-v2",
+      "hash": "0x287ce5bc5d39668ce165ce7c42dfd53ed5689da76e50c5cec894650e7dc954cb",
+      "link": "https://explorer-studio.genlayer.com/tx/0x287ce5bc5d39668ce165ce7c42dfd53ed5689da76e50c5cec894650e7dc954cb",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null,
+      "note": "Governor published the TIGHTENS amendment text as Sentinel policy v2 with a 5,000 DEMO cap."
+    },
+    {
+      "label": "COV-SPEND-G1-submit",
+      "hash": "0x1fbe04f91733338ef477e472b2686dea12e071664c86bbde01674fd289bcba0d",
+      "link": "https://explorer-studio.genlayer.com/tx/0x1fbe04f91733338ef477e472b2686dea12e071664c86bbde01674fd289bcba0d",
+      "consensus": "FINALIZED",
+      "execution": "FINISHED_WITH_ERROR",
+      "error": null,
+      "note": "Refused at submit: [EXPECTED] transfer exceeds HARD_MAX_TRANSFER. The guard compares against the current policy cap (v2: 5,000). Under v1 (10,000) this 7,000 spend would have passed the guard."
+    },
+    {
+      "label": "COV-SPEND-G1-evaluate",
+      "hash": "0xb4a158094db3130ba4faff6794961b3af39e1b08cb453b99303422d788e72e2d",
+      "link": "https://explorer-studio.genlayer.com/tx/0xb4a158094db3130ba4faff6794961b3af39e1b08cb453b99303422d788e72e2d",
+      "consensus": "FINALIZED",
+      "execution": "FINISHED_WITH_ERROR",
+      "error": null,
+      "note": "Refused: [EXPECTED] proposal does not exist. Expected, because the submit was refused; the script sends evaluate regardless."
     }
   ],
   "state": {
@@ -553,6 +604,29 @@
           "proposed_at": 1794857391
         },
         "state": "ACTIVE"
+      },
+      "tighten3": {
+        "outcome": {
+          "quote": "No treasury transfer may exceed 5,000 DEMO. This lowers the previous maximum of 10,000 DEMO.",
+          "reason_code": "LOWERS_LIMIT",
+          "status": "JUDGED",
+          "verdict": "TIGHTENS"
+        },
+        "record": {
+          "amendment_id": "AMD-TIGHTEN-03",
+          "appeal_open_until": 0,
+          "current_sha256": "2e470c86529c334537d80f9aac4889442a912d82de71594f269e37217b096f46",
+          "current_text": "R1 — HARD_MAX_TRANSFER: No treasury transfer may exceed the published maximum.\nR2 — PURPOSE_ALIGNMENT: Spending must materially advance protocol development, security, infrastructure or approved community operations.\nR3 — SECURITY_EXCLUSION: Do not interact with a protocol where credible evidence shows an unresolved critical exploit or active loss.\nR4 — CONFLICTING_EVIDENCE: Materially conflicting credible evidence forbids immediate execution.\nR5 — EMERGENCY_PAUSE: A temporary, bounded pause requires independently verifiable active-exploit evidence.",
+          "deadline": 1794988200,
+          "effective_at": 1794903644,
+          "governor": "0xA88501588c17A525F2bEd2BfE3FD12AaFDd2b912",
+          "new_sha256": "cc413e7d65284526576890800721d4e347e3dfcaf4443b759f19e4510a8b3e2d",
+          "new_url": "https://raw.githubusercontent.com/JWattjr/covenant-sentinel/aaf9f750774115da099153a6dabf7a5404ed7f06/defense-fixtures/policy/policy-v2-cap-5000.txt",
+          "note": "Lowers the R1 maximum from 10,000 to 5,000 DEMO, stated explicitly.",
+          "policy_version": 1,
+          "proposed_at": 1794901800
+        },
+        "state": "ACTIVE"
       }
     },
     "upgrades": {
@@ -654,5 +728,21 @@
         "state": "VOID"
       }
     }
+  },
+  "governorStep": {
+    "amendment": "AMD-TIGHTEN-03",
+    "sentinelPolicyVersion": 2,
+    "policyV2": {
+      "max_transfer_amount": 5000,
+      "canonical_id": "covenant-v2",
+      "sha256": "cc413e7d65284526576890800721d4e347e3dfcaf4443b759f19e4510a8b3e2d"
+    },
+    "spend": {
+      "id": "COV-SPEND-G1",
+      "amount": 7000,
+      "outcome": "REFUSED_AT_SUBMIT",
+      "reason": "transfer exceeds HARD_MAX_TRANSFER (policy v2 cap 5,000)"
+    },
+    "signedBy": "Sentinel governor, run by the owner in their own terminal (password never shared)"
   }
 }

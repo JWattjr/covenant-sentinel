@@ -46,6 +46,16 @@ const liveSha = createHash("sha256").update(policy.policy_text, "utf8").digest("
 const frozenChecks = Object.entries(proof.final.amendment).map(([name, a]) => ({ name, frozenSha: a.record.current_sha256, ok: a.record.current_sha256 === liveSha }));
 for (const c of frozenChecks) if (!c.ok) failures.push(`amendment ${c.name} froze a policy that differs from the Sentinel's live policy v1`);
 
+// Governor step: the Sentinel's current policy must be the judged amendment text.
+if (proof.governorStep) {
+  const v = Number(await client.readContract({ address: proof.existing.sentinel, functionName: "get_current_policy_version", args: [] }));
+  const p2 = await client.readContract({ address: proof.existing.sentinel, functionName: "get_policy", args: [BigInt(proof.governorStep.sentinelPolicyVersion)] });
+  const sha2 = createHash("sha256").update(p2.policy_text, "utf8").digest("hex");
+  if (v !== proof.governorStep.sentinelPolicyVersion) failures.push(`Sentinel current policy is v${v}, proof says v${proof.governorStep.sentinelPolicyVersion}`);
+  if (sha2 !== proof.governorStep.policyV2.sha256) failures.push("Sentinel policy v2 text differs from the judged amendment text");
+  if (Number(p2.max_transfer_amount) !== proof.governorStep.policyV2.max_transfer_amount) failures.push("Sentinel policy v2 cap differs from the proof");
+}
+
 // Live reads, kept separate from the recorded proof above.
 const live = {};
 live.amendmentTighten = await client.readContract({

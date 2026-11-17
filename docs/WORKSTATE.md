@@ -37,3 +37,5 @@ Existing Sentinel `0x7CeA0E0D9E2a343C29fdDa253d3925c3Aba9b924` and Vault `0xEB10
 - Docs, frontend /defense (+ /api/defense), proof, milestone written; 35 explorer links verified. Committing, then Vercel clean-archive deploy.
 - Case 9: AMD-TIGHTEN-02 (new rule R6) judged TIGHTENS (ADDS_CONSTRAINT), PENDING. Attempt 1 stays NEUTRAL.
 - Fixes: TIGHTEN-02 activated (ACTIVE); verifier checks frozen-policy hash vs Sentinel; milestone has app/repo/commit links; claim wording = receipt, moves no funds; attempt 1 ambiguity noted.
+- Case 10: AMD-TIGHTEN-03 (cap 5,000, explicit) judged TIGHTENS (LOWERS_LIMIT), PENDING until 08:20:44 UTC. Governor keystore found (moment-grid-studionet = governor, password-encrypted; I cannot unlock). scripts/governor-step.mjs written for the user to run.
+- Governor step DONE (owner ran scripts/governor-step.mjs): policy v2 published (cap 5,000, text = AMD-TIGHTEN-03). 7,000 spend G1 refused at submit (transfer exceeds HARD_MAX_TRANSFER). Evaluate then refused (proposal does not exist), expected.

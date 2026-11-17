@@ -259,7 +259,7 @@ Three further contracts check the rules themselves, not only individual spends:
 
 Live deployment, cases and receipts: `deploy/proof-v1.json`. Verify it read-only with `npm run verify:proof-v1`. The console at `/defense` shows the recorded proof and live reads separately. The design, its limits and the walkthrough are in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/TUTORIAL-DEFENSE.md`](docs/TUTORIAL-DEFENSE.md) and [`docs/DEMO.md`](docs/DEMO.md).
 
-Honest limits: the existing Sentinel's policy is not changed by the amendment contract, because publishing it needs the governor's key. The DEMO credit is made by the existing vault; the treasury claim only records a verified receipt and moves no funds. StudioNet exposes no appeal, so the LOOSENS appeal window is displayed only.
+From verdict to enforcement: amendment `AMD-TIGHTEN-03` was judged TIGHTENS, activated, and published by the Sentinel's governor as policy v2 (cap 5,000 DEMO). A 7,000 DEMO spend was then refused at submit. Honest limits: only the R1 cap is enforced deterministically, because the Sentinel's evaluator accepts rule IDs R1 to R5. The DEMO credit is made by the existing vault; the treasury claim only records a verified receipt and moves no funds. StudioNet exposes no appeal, so the LOOSENS appeal window is displayed only.
 
 ## Documentation
 

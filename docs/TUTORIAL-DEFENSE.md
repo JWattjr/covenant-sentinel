@@ -31,7 +31,7 @@ Validators fetch the replacement themselves and judge LOOSENS, TIGHTENS or NEUTR
 
 `activate_amendment` is deterministic. It reverts until `effective_at` has passed, and it cannot run on a proposal that was never judged.
 
-Honest limit: the Sentinel's policy is not changed by this contract. Publishing a new policy into the Sentinel is a governor call on the existing contract, and that governor key was not available. The amendment verdicts are therefore recorded and enforced only by the governor's choice to publish.
+From verdict to enforcement: this contract does not write to the Sentinel. The Sentinel's governor publishes an ACTIVE amendment as a new policy version. In the live run, `AMD-TIGHTEN-03` (cap lowered from 10,000 to 5,000 DEMO) was judged TIGHTENS, activated, and published as policy v2, and its text hash matches the judged text. A 7,000 DEMO spend was then refused at submit, because `submit_treasury_proposal` compares the amount with the current policy cap. One limit remains: the Sentinel's evaluator accepts rule IDs R1 to R5, so only the cap is enforced deterministically, and a new rule such as R6 cannot be enforced without changing the Sentinel.
 
 ## 3. Treasury record (`contracts/treasury_record.py`)
 
