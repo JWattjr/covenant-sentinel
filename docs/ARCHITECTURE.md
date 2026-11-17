@@ -88,6 +88,6 @@ Live cases and the recorded proof are described in `deploy/proof-v1.json` and `d
 Known limits, stated rather than hidden:
 
 - The existing Sentinel's policy is not changed by PolicyAmendments. Publishing an amendment into the Sentinel needs the governor's key, which was not available. Amendment verdicts are recorded, and enforcement depends on the governor's publish.
-- The vault credit is simulated DEMO accounting, not a native token transfer.
+- The vault credit is simulated DEMO accounting. The treasury claim records a verified receipt of it and moves no funds.
 - Appeals are not exposed on StudioNet, so the LOOSENS appeal window is displayed but cannot be acted on.
 - The direct-mode test harness allows one contract per test and does not advance the contract clock. Treasury cross-contract behaviour and time-based transitions are therefore proven by the live run, not by the direct tests.

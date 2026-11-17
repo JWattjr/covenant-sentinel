@@ -122,6 +122,7 @@ export function DefenseSuite() {
                   {l?.outcome?.verdict ? <Pill tone="live">Live: {l.outcome.verdict} · {l.state}</Pill> : null}
                 </div>
                 <p className="text-[#45484f]">Reason: <span className="font-mono">{a.outcome.reason_code ?? a.outcome.reason}</span></p>
+                {a.record.amendment_id === "AMD-TIGHTEN-01" ? <p className="text-xs text-[#63655f]">Note: this text says “5,000 DEMO, the published maximum”, which conflicts with the Sentinel’s 10,000 cap. The wording was ambiguous, which likely explains the NEUTRAL verdict. Attempt 2 below adds a new rule instead.</p> : null}
                 {a.outcome.quote ? <blockquote className="border-l-2 border-[#315fe8] pl-3 text-[#303238]">“{a.outcome.quote}”</blockquote> : null}
                 <p className="text-[#63655f]">Takes effect: {iso(a.record.effective_at)}</p>
                 {a.outcome.verdict === "LOOSENS" ? (
@@ -168,7 +169,7 @@ export function DefenseSuite() {
 
       <section aria-labelledby="spenders">
         <h2 id="spenders" className="display-title text-4xl">Spender record</h2>
-        <p className="mt-2 text-sm text-[#63655f]">Written only from finalized Sentinel results. Three clean executed actions with no violations raise the allowance to 2x. Any BLOCK freezes the spender. Payouts are DEMO vault credits, claimed after the credit is verified.</p>
+        <p className="mt-2 text-sm text-[#63655f]">Written only from finalized Sentinel results. Three clean executed actions with no violations raise the allowance to 2x. Any BLOCK freezes the spender. The DEMO credit itself happens in the vault. The claim only records a receipt after that credit is verified, and the treasury record moves no funds.</p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {[proof.state.c8?.spenderA, proof.state.c8?.spenderB].map((s, i) => {
             if (!s) return null;

@@ -14,6 +14,10 @@ const milestone = {
   summary:
     "Three contracts that check the rules around a policy-bound treasury: validator-judged upgrade reviews, policy amendment comparisons, and a per-spender record written only from finalized results. Live on StudioNet with eight recorded cases, including real deviations.",
   network: "GenLayer StudioNet (chain 61999)",
+  app_url: "https://covenant-sentinel.vercel.app/defense",
+  repository: "https://github.com/JWattjr/covenant-sentinel",
+  contracts_commit: "https://github.com/JWattjr/covenant-sentinel/tree/ba28acf66bd24e4484c554dfe1182233ef2e91b0",
+  proof_file_url: "https://covenant-sentinel.vercel.app/defense/proof-v1.json",
   contracts: Object.entries(proof.contracts).map(([name, c]) => ({
     name,
     address: c.address,
@@ -21,7 +25,7 @@ const milestone = {
     role: {
       UpgradeGuard: "Validators judge ADVANCE, HOLD or ROLLBACK from a commit-pinned source diff, with one quoted line.",
       PolicyAmendments: "Validators judge LOOSENS, TIGHTENS or NEUTRAL against the frozen Sentinel policy, with one quoted clause.",
-      TreasuryRecord: "No model. Per-spender record and pull-based claims, written only from committed Sentinel results.",
+      TreasuryRecord: "No model. Per-spender record and verified claim receipts, written only from committed Sentinel results. It moves no funds.",
     }[name],
   })),
   existing_contracts_unchanged: [
@@ -60,7 +64,8 @@ const milestone = {
   ],
   honest_limits: [
     "The Sentinel's policy was not changed: publishing a new policy needs the governor key, which was not available.",
-    "Payout is DEMO vault accounting, not a native token transfer.",
+    "The DEMO credit happens in the existing vault. The treasury claim only records a receipt after verifying that credit; it moves no funds.",
+    "Amendment attempt 1 proposed \"5,000 DEMO, the published maximum\", which conflicts with the Sentinel's 10,000 cap, so its NEUTRAL verdict reflects ambiguous wording. Attempt 2 adds a new rule and was judged TIGHTENS.",
     "StudioNet exposes no appeal, so the LOOSENS appeal window is displayed only.",
     "Direct tests cover one contract at a time; treasury cross-contract reads and clock-based transitions are proven live.",
   ],

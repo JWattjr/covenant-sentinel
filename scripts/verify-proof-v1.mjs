@@ -1,6 +1,7 @@
 // Read-only verification of deploy/proof-v1.json. Writes nothing and signs nothing.
 // Checks every explorer link through the explorer API (browser user agent), and re-reads the
 // three contracts' current state from StudioNet.
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createClient } from "genlayer-js";
 import { studionet } from "genlayer-js/chains";
@@ -39,6 +40,12 @@ for (const t of proof.transactions) {
   await checkTx(t.label, t.hash);
 }
 
+// The frozen policy inside PolicyAmendments must equal the Sentinel's immutable policy v1 (checked on chain, not trusted).
+const policy = await client.readContract({ address: proof.existing.sentinel, functionName: "get_policy", args: [1n] });
+const liveSha = createHash("sha256").update(policy.policy_text, "utf8").digest("hex");
+const frozenChecks = Object.entries(proof.final.amendment).map(([name, a]) => ({ name, frozenSha: a.record.current_sha256, ok: a.record.current_sha256 === liveSha }));
+for (const c of frozenChecks) if (!c.ok) failures.push(`amendment ${c.name} froze a policy that differs from the Sentinel's live policy v1`);
+
 // Live reads, kept separate from the recorded proof above.
 const live = {};
 live.amendmentTighten = await client.readContract({
@@ -55,6 +62,8 @@ const summary = {
   network: proof.network,
   chainId: proof.chainId,
   links: rows,
+  sentinelPolicyV1Sha256: liveSha,
+  frozenPolicyChecks: frozenChecks,
   linkFailures: failures,
   live,
   deposits: proof.deposits,
@@ -64,4 +73,4 @@ if (failures.length) {
   console.error(`verify:proof-v1 FAILED: ${failures.length} link check(s)`);
   process.exit(1);
 }
-console.log(`verify:proof-v1 OK: ${rows.length} explorer links verified`);
+console.log(`verify:proof-v1 OK: ${rows.length} explorer links verified; ${frozenChecks.length} frozen-policy hashes match the Sentinel`);

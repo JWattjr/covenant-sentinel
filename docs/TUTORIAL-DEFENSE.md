@@ -43,9 +43,9 @@ The multiplier table is in the code:
 - three clean actions and no violations: 2x
 - otherwise: 1x
 
-A reserved claim is created for each EXECUTED spend. `claim` pays only the spender who submitted it. Before paying, it reads the vault's execution record and checks that the amount matches. A reservation that is not claimed within 7 days can be expired.
+A reserved claim is created for each EXECUTED spend. `claim` accepts only the spender who submitted it. Before recording the receipt, it reads the vault's execution record and checks that the amount matches. The contract moves no funds. A reservation that is not claimed within 7 days can be expired.
 
-The payout is a DEMO accounting credit in the vault, not a transfer of a native token. The vault holds simulated units.
+The credit itself is a DEMO accounting entry made by the existing vault, not a transfer of a native token. The treasury claim is a verified receipt of that credit.
 
 ## 4. How the pieces fit
 

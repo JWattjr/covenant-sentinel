@@ -269,6 +269,14 @@
       "consensus": "FINALIZED",
       "execution": "SUCCESS",
       "error": null
+    },
+    {
+      "label": "c9-activate-tighten2",
+      "hash": "0x5333c20d7513ffcc087eee4cc1d62d4832d730fa73dcc5f068c914e95ad758e8",
+      "link": "https://explorer-studio.genlayer.com/tx/0x5333c20d7513ffcc087eee4cc1d62d4832d730fa73dcc5f068c914e95ad758e8",
+      "consensus": "FINALIZED",
+      "execution": "SUCCESS",
+      "error": null
     }
   ],
   "state": {
@@ -544,7 +552,7 @@
           "policy_version": 1,
           "proposed_at": 1794857391
         },
-        "state": "PENDING"
+        "state": "ACTIVE"
       }
     },
     "upgrades": {
